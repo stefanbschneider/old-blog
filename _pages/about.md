@@ -4,8 +4,7 @@ title: About Me
 permalink: /about/
 ---
 
-This website is powered by **[fastpages](https://github.com/fastai/fastpages)** [^1].
+I am Stefan Schneider, a computer science PhD candidate, enthusiastic researcher, and passionate developer.
 
+More information about myself as well as contact details are on my [website](https://stefanbschneider.github.io/).
 
-
-[^1]:a blogging platform that natively supports Jupyter notebooks in addition to other formats.
