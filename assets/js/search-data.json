@@ -14,7 +14,7 @@
     
         ,"post1": {
             "title": "Deploying a PyTorch Model Using Django",
-            "content": "We are going build a simple image classification using a pre-trained model in PyTorch. We are then going to deploy the PyTorch model inside a simple web app built with Django. .",
+            "content": "We are going build a simple image classification using a pre-trained model in PyTorch. We are then going to deploy the PyTorch model inside a simple web app built with Django. . Install and Setup Django . Install: . pip install django . Create the project and a Django app: . django-admin startproject pytorch_django cd pytorch_django python manage.py startapp image_classification .",
             "url": "https://stefanbschneider.github.io/blog/machine%20learning/pytorch/vision/classification/django/heroku/deployment/2020/12/30/pytorch-django.html",
             "relUrl": "/machine%20learning/pytorch/vision/classification/django/heroku/deployment/2020/12/30/pytorch-django.html",
             "date": " • Dec 30, 2020"
