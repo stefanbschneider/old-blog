@@ -13,10 +13,10 @@
   
     
         ,"post1": {
-            "title": "Title",
-            "content": "&gt; &quot;Building a simple image classification web app using Django and PyTorch and deploying it on Heroku.&quot; - hide: true - toc: true - branch: master - badges: true - comments: true - categories: [machine learning, pytorch, vision, classification, django, heroku, deployment] - image: images/pytorch.png . File &#34;&lt;ipython-input-1-aa2849816e72&gt;&#34;, line 2 &gt; &#34;Building a simple image classification web app using Django and PyTorch and deploying it on Heroku.&#34; ^ SyntaxError: invalid syntax .",
-            "url": "https://stefanbschneider.github.io/blog/2020/12/30/pytorch-django.html",
-            "relUrl": "/2020/12/30/pytorch-django.html",
+            "title": "Deploying a PyTorch Model Using Django",
+            "content": "",
+            "url": "https://stefanbschneider.github.io/blog/machine%20learning/pytorch/vision/classification/django/heroku/deployment/2020/12/30/pytorch-django.html",
+            "relUrl": "/machine%20learning/pytorch/vision/classification/django/heroku/deployment/2020/12/30/pytorch-django.html",
             "date": " • Dec 30, 2020"
         }
         
