@@ -5,6 +5,7 @@ permalink: /about/
 ---
 
 I am Stefan Schneider, a computer science PhD candidate, enthusiastic researcher, and passionate developer.
+I am most interested in computer networks (cloud, 5G, softwarization) and machine learning/reinforcement learning.
 
-More information about myself as well as contact details are on my [website](https://stefanbschneider.github.io/).
+Contact details and more information about myself are on my [website](https://stefanbschneider.github.io/).
 
