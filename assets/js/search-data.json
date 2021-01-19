@@ -39,8 +39,8 @@
 
   
       ,"page1": {
-          "title": "About Me",
-          "content": "I am Stefan Schneider, a computer science PhD candidate, enthusiastic researcher, and passionate developer. I am most interested in computer networks (cloud, 5G, softwarization) and machine learning/reinforcement learning. . Contact details and more information about myself are on my website. .",
+          "title": "About",
+          "content": "I am a computer science PhD candidate and passionate about learning new things. I use this blog to take notes for myself - and possibly help others. . Contact details and more information about myself are on my website. .",
           "url": "https://stefanbschneider.github.io/blog/about/",
           "relUrl": "/about/",
           "date": ""
