@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Building a Django App and Deploying It on Heroku | Stefan’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Building a Django App and Deploying It on Heroku" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Building a ‘hello world’ web app using Django and deploying it on Heroku." />
+<meta property="og:description" content="Building a ‘hello world’ web app using Django and deploying it on Heroku." />
+<link rel="canonical" href="https://stefanbschneider.github.io/blog/django/heroku/github/deployment/2021/01/19/django-heroku.html" />
+<meta property="og:url" content="https://stefanbschneider.github.io/blog/django/heroku/github/deployment/2021/01/19/django-heroku.html" />
+<meta property="og:site_name" content="Stefan’s Blog" />
+<meta property="og:image" content="https://stefanbschneider.github.io/blog/images/logos/heroku-logotype-horizontal-purple.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-19T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"Building a ‘hello world’ web app using Django and deploying it on Heroku.","url":"https://stefanbschneider.github.io/blog/django/heroku/github/deployment/2021/01/19/django-heroku.html","@type":"BlogPosting","headline":"Building a Django App and Deploying It on Heroku","dateModified":"2021-01-19T00:00:00-06:00","datePublished":"2021-01-19T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/heroku-logotype-horizontal-purple.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/django/heroku/github/deployment/2021/01/19/django-heroku.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://stefanbschneider.github.io/blog/feed.xml" title="Stefan's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZW4MBJ0T3E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZW4MBJ0T3E');
+</script>
+
+
+
+
+<!--for cookie banner (from websitepolicies.com)-->
+<link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Stefan&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Building a Django App and Deploying It on Heroku</h1><p class="page-description">Building a 'hello world' web app using Django and deploying it on Heroku.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-19T00:00:00-06:00" itemprop="datePublished">
+        Jan 19, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      4 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#django">django</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#heroku">heroku</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#github">github</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#deployment">deployment</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/stefanbschneider/blog/tree/master/_notebooks/2021-01-19-django-heroku.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/stefanbschneider/blog/master?filepath=_notebooks%2F2021-01-19-django-heroku.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/stefanbschneider/blog/blob/master/_notebooks/2021-01-19-django-heroku.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Requirements">Requirements </a></li>
+<li class="toc-entry toc-h2"><a href="#Django-"Hello-World"-App">Django &quot;Hello World&quot; App </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Initial-Setup">Initial Setup </a></li>
+<li class="toc-entry toc-h3"><a href="#Create-the-"Hello-World"-App">Create the &quot;Hello World&quot; App </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#Deploying-the-App-on-Heroku">Deploying the App on Heroku </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Creating-a-New-App-on-Heroku">Creating a New App on Heroku </a></li>
+<li class="toc-entry toc-h3"><a href="#Preparing-Deployment">Preparing Deployment </a></li>
+<li class="toc-entry toc-h3"><a href="#Automated-Deployment-via-GitHub">Automated Deployment via GitHub </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#What-Next?">What Next? </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-01-19-django-heroku.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this guide, I show how to setup a simple Django web app that says "Hello World!"
+and how to deploy it on Heroku through GitHub.
+The process is simple enough, but I still kept running into errors when deploying new Django apps,
+so I thought to finally just write it down step-by-step.</p>
+<h2 id="Requirements">
+<a class="anchor" href="#Requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements<a class="anchor-link" href="#Requirements"> </a>
+</h2>
+<p>For that, Heroku and GitHub accounts are required. Both are free.</p>
+<p>All code should be in a GitHub repository.
+For reference, this is my GitHub repository:
+<a href="https://github.com/stefanbschneider/django-hello-world">https://github.com/stefanbschneider/django-hello-world</a>
+The steps described here belong to <a href="https://github.com/stefanbschneider/django-hello-world/releases/tag/v1.0.0">release v1.0.0</a>.</p>
+<h2 id='Django-"Hello-World"-App'>
+<a class="anchor" href="#Django-" hello-world aria-hidden="true"><span class="octicon octicon-link"></span></a>Django "Hello World" App<a class="anchor-link" href="#Django-%22Hello-World%22-App"> </a>
+</h2>
+<h3 id="Initial-Setup">
+<a class="anchor" href="#Initial-Setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Initial Setup<a class="anchor-link" href="#Initial-Setup"> </a>
+</h3>
+<p>Install Django:</p>
+
+<pre><code>pip install django</code></pre>
+<p>Create a new Django project (inside the GitHub repository):</p>
+
+<pre><code>django-admin startproject myproject</code></pre>
+<p>A project can consist of multiple apps.
+Create a new Django <code>helloworld</code> app inside the <code>myproject</code> project:</p>
+
+<pre><code>cd myproject
+python manage.py startapp helloworld</code></pre>
+<p>Run the dev server:</p>
+
+<pre><code>python manage.py runserver</code></pre>
+<p>Go to <a href="http://localhost:8000/">http://localhost:8000/</a> in the browser. This should confirm the successful initial setup:</p>
+<p><img src="/blog/images/copied_from_nb/django-heroku/django-dev-server.png" alt=""></p>
+<h3 id='Create-the-"Hello-World"-App'>
+<a class="anchor" href="#Create-the-" hello-world aria-hidden="true"><span class="octicon octicon-link"></span></a>Create the "Hello World" App<a class="anchor-link" href="#Create-the-%22Hello-World%22-App"> </a>
+</h3>
+<p>Link the <code>helloworld</code> app to the project by adding</p>
+<div class="highlight"><pre><span></span><span class="s1">'helloworld.apps.HelloworldConfig'</span><span class="p">,</span>
+</pre></div>
+<p>to the <code>INSTALLED_APPS</code> inside <code>myproject/settings.py</code>.</p>
+<p>Create a new HTML-template <code>index.html</code> inside <code>helloworld/templates/helloworld</code>
+(also create these folders):</p>
+<div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">"en"</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">"UTF-8"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Hello World<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+Hello World!
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+<p>Create <code>helloworld/urls.py</code> to configure a URL path showing the new template:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">TemplateView</span>
+
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="n">TemplateView</span><span class="o">.</span><span class="n">as_view</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s1">'helloworld/index.html'</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">'index'</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+<p>Finally, link to the <code>helloworld</code> URLs from the project's <code>myproject/urls.py</code>:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">django.urls</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">include</span>
+
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span> <span class="n">include</span><span class="p">(</span><span class="s1">'helloworld.urls'</span><span class="p">)),</span>
+    <span class="n">path</span><span class="p">(</span><span class="s1">'admin/'</span><span class="p">,</span> <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">urls</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+<p>Now, <a href="http://localhost:8000/">http://localhost:8000/</a> should show the dummy "hello world" message:</p>
+<p><img src="/blog/images/copied_from_nb/django-heroku/hello-world.png" alt=""></p>
+<h2 id="Deploying-the-App-on-Heroku">
+<a class="anchor" href="#Deploying-the-App-on-Heroku" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deploying the App on Heroku<a class="anchor-link" href="#Deploying-the-App-on-Heroku"> </a>
+</h2>
+<h3 id="Creating-a-New-App-on-Heroku">
+<a class="anchor" href="#Creating-a-New-App-on-Heroku" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating a New App on Heroku<a class="anchor-link" href="#Creating-a-New-App-on-Heroku"> </a>
+</h3>
+<p>To create a new app on Heroku, I log into the <a href="https://dashboard.heroku.com/apps">Heroku dashboard</a> and select
+<code>New &gt; Create new app</code>.
+For the new app, any unique name is ok (I chose <code>django-hello-world-app</code>).</p>
+<p><img src="/blog/images/copied_from_nb/django-heroku/heroku-new-app.png" alt="">
+</p>
+<div class="flash">
+    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg>
+    <strong>Note: </strong>The name of your Heroku app will also determine its URL, which is <code>&lt;app-name&gt;.herokuapp.com</code>. It can still be changed in the settings later.
+</div>
+Next, I select my GitHub repository as deployment method inside Heroku
+(this may require authorization using GitHub credentials):
+<p><img src="/blog/images/copied_from_nb/django-heroku/heroku-deployment-method.png" alt=""></p>
+<p>Finally, I have to set some configuration variables (= environmental variables) inside Heroku:
+<code>Settings &gt; Config Vars &gt; Reveal Config Vars</code>.</p>
+<ul>
+<li>Set <code>DJANGO_SETTINGS_MODULE</code> to <code>myproject.prod_settings</code>, which is are the settings for production deployment, created later.</li>
+<li>Set <code>DJANGO_SECRET_KEY</code> to a randomly generated secret key that is used for deployment. This key must not be commited to the GitHub repository.</li>
+</ul>
+<p><img src="/blog/images/copied_from_nb/django-heroku/heroku-config-vars.png" alt=""></p>
+<h3 id="Preparing-Deployment">
+<a class="anchor" href="#Preparing-Deployment" aria-hidden="true"><span class="octicon octicon-link"></span></a>Preparing Deployment<a class="anchor-link" href="#Preparing-Deployment"> </a>
+</h3>
+<p>Before the actual deployment on Heroku, a few additional steps are required.</p>
+<p>Currently, the generated folder structure should look like this:</p>
+
+<pre><code>myproject/
+    helloworld/
+    myproject/
+    manage.py</code></pre>
+<p>For deployment on Heroku, move everything into the top-level folder
+such that <code>manage.py</code> is in the project root and there is no more top-level <code>myproject</code> directory:</p>
+
+<pre><code>helloworld/
+myproject/
+manage.py</code></pre>
+<p>The <code>Procfile</code> indicates how to deploy and serve the web app, here with <code>gunicorn</code>:</p>
+
+<pre><code>release: python manage.py migrate --no-input
+web: gunicorn myproject.wsgi</code></pre>
+<p>Accordingly, the dependencies of this "hello world" app are (saved in <code>requirements.txt</code>):</p>
+
+<pre><code>django
+django-heroku
+gunicorn</code></pre>
+<p>Heroku needs <code>django-heroku</code> for proper deployment (see <a href="https://devcenter.heroku.com/articles/django-app-configuration">Heroku docs</a>).</p>
+<p>Specify the root path for static files by appending to the <code>myproject/settings.py</code> (also <code>import os</code>):</p>
+<div class="highlight"><pre><span></span><span class="c1"># Static files (CSS, JavaScript, Images)</span>
+<span class="c1"># https://docs.djangoproject.com/en/3.1/howto/static-files/</span>
+<span class="n">STATIC_URL</span> <span class="o">=</span> <span class="s1">'/static/'</span>
+<span class="c1"># path to where static files are copied for deployment (eg, for heroku)</span>
+<span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">BASE_DIR</span><span class="p">,</span> <span class="s1">'staticfiles'</span><span class="p">)</span>
+<span class="c1"># location of static files in local development: https://learndjango.com/tutorials/django-favicon-tutorial</span>
+<span class="c1"># not needed yet, only once adding static files (eg, images)</span>
+<span class="c1"># STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]</span>
+</pre></div>
+<p>Create <code>myproject/prod_settings.py</code> with additional settings for production deployment:</p>
+<div class="highlight"><pre><span></span><span class="sd">""" Production Settings """</span>
+<span class="c1"># default: use settings from main settings.py if not overwritten</span>
+<span class="kn">from</span> <span class="nn">.settings</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">django_heroku</span>
+
+
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">'DJANGO_SECRET_KEY'</span><span class="p">,</span> <span class="n">SECRET_KEY</span><span class="p">)</span>
+<span class="c1"># adjust to the URL of your Heroku app</span>
+<span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'django-hello-world-app.herokuapp.com'</span><span class="p">]</span>
+
+<span class="c1"># Activate Django-Heroku.</span>
+<span class="n">django_heroku</span><span class="o">.</span><span class="n">settings</span><span class="p">(</span><span class="nb">locals</span><span class="p">())</span>
+</pre></div>
+<p>Commit and push everything to the repository's <code>main</code> branch.</p>
+<h3 id="Automated-Deployment-via-GitHub">
+<a class="anchor" href="#Automated-Deployment-via-GitHub" aria-hidden="true"><span class="octicon octicon-link"></span></a>Automated Deployment via GitHub<a class="anchor-link" href="#Automated-Deployment-via-GitHub"> </a>
+</h3>
+<p>To test the deployment, go to the Heroku dashboard <code>Deploy &gt; Manual deploy</code>, select the <code>main</code> branch and deploy.
+After the build and deployment succeeds, click <code>Open app</code> to open <code>&lt;app-name&gt;.herokuapp.com</code>, which should show "Hello World".
+Deployment successful!</p>
+<p>Finally, enable automatic deploys at <code>Deploy &gt; Automatic deploys &gt; Enable</code> such that the latest version of the Django app is build and deployed automatically
+with every push to the <code>main</code> branch.
+</p>
+<div class="flash">
+    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg>
+    <strong>Note: </strong>Heroku’s free dynos are free but power off if they are unused. So loading a deployed app that hasn’t been used in a while may take multiple seconds.
+</div>
+<h2 id="What-Next?">
+<a class="anchor" href="#What-Next?" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Next?<a class="anchor-link" href="#What-Next?"> </a>
+</h2>
+<p>Small example apps I built with Django and deployed on Heroku:</p>
+<ul>
+<li>Quotify: An example app showing inspirational quotes. [<a href="https://github.com/stefanbschneider/quotify">Code</a>] [<a href="https://django-quotify.herokuapp.com/">App</a>]</li>
+<li>Ideally: Organize &amp; Grow Your Ideas. [<a href="https://github.com/stefanbschneider/ideally">Code</a>] [<a href="https://ideally-app.herokuapp.com/">App</a>]</li>
+<li>FeelYa: The app that gets you! [<a href="https://github.com/stefanbschneider/feelya">Code</a>] [<a href="https://feelya-app.herokuapp.com/">App</a>]</li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="stefanbschneider/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/django/heroku/github/deployment/2021/01/19/django-heroku.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My personal blog on networking, machine learning, and technology in general.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/stefanbschneider" title="stefanbschneider"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/stefan_schn" title="stefan_schn"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
