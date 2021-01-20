@@ -1,7 +1,7 @@
 ---
 toc: true
 layout: post
-author: [fastpages](https://github.com/fastai/fastpages)
+author: fastpages
 description: A minimal example of using markdown with fastpages.
 categories: [markdown]
 title: An Example Markdown Post
