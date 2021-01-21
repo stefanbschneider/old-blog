@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Adding Google Analytics to a Django App | Stefan’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Adding Google Analytics to a Django App" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Using the new Google Analytics GA4 for monitoring and analyzing user traffic on a Django app." />
+<meta property="og:description" content="Using the new Google Analytics GA4 for monitoring and analyzing user traffic on a Django app." />
+<link rel="canonical" href="https://stefanbschneider.github.io/blog/django/google%20analytics/2021/01/21/django-google-analytics.html" />
+<meta property="og:url" content="https://stefanbschneider.github.io/blog/django/google%20analytics/2021/01/21/django-google-analytics.html" />
+<meta property="og:site_name" content="Stefan’s Blog" />
+<meta property="og:image" content="https://stefanbschneider.github.io/blog/images/logos/google-analytics.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-21T00:00:00-06:00" />
+<script type="application/ld+json">
+{"description":"Using the new Google Analytics GA4 for monitoring and analyzing user traffic on a Django app.","url":"https://stefanbschneider.github.io/blog/django/google%20analytics/2021/01/21/django-google-analytics.html","@type":"BlogPosting","headline":"Adding Google Analytics to a Django App","dateModified":"2021-01-21T00:00:00-06:00","datePublished":"2021-01-21T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/google-analytics.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/django/google%20analytics/2021/01/21/django-google-analytics.html"},"@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://stefanbschneider.github.io/blog/feed.xml" title="Stefan's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZW4MBJ0T3E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-ZW4MBJ0T3E');
+</script>
+
+
+
+
+<!--for cookie banner (from websitepolicies.com)-->
+<link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Stefan&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Adding Google Analytics to a Django App</h1><p class="page-description">Using the new Google Analytics GA4 for monitoring and analyzing user traffic on a Django app.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-21T00:00:00-06:00" itemprop="datePublished">
+        Jan 21, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#django">django</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#google analytics">google analytics</a>
+        
+      
+      </p>
+    
+
+    
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Requirements">Requirements </a></li>
+<li class="toc-entry toc-h2"><a href="#Creating-the-Google-Analytics-GA4-Property">Creating the Google Analytics GA4 Property </a></li>
+<li class="toc-entry toc-h2"><a href="#Adding-Google-Analytics-to-the-Django-App">Adding Google Analytics to the Django App </a></li>
+<li class="toc-entry toc-h2"><a href="#Adding-a-Cookie-Banner">Adding a Cookie Banner </a></li>
+<li class="toc-entry toc-h2"><a href="#What-Next?">What Next? </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2021-01-21-django-google-analytics.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><a href="https://marketingplatform.google.com/about/analytics/">Google Analytics</a> is the most popular solution to monitor and analyze web traffic.
+It provides detailed information about users visiting your website or web app - both historically and in real-time.</p>
+<p>Here, use the <a href="https://support.google.com/analytics/answer/10089681">new Google Analytics GA4</a>
+to create a "Google Analytics property" for monitoring analyzing the traffic on a Django web app.
+As simple example app, I build on the <a href="https://stefanbschneider.github.io/blog/django/heroku/github/deployment/2021/01/19/django-heroku.html">previously described</a>
+Django "Hello World" app.</p>
+<p>The final Django app is deployed on Heroku and available <a href="https://django-hello-world-app.herokuapp.com/">here</a>.
+The final code is in this <a href="https://github.com/stefanbschneider/django-hello-world">this GitHub repository</a>.</p>
+<h2 id="Requirements">
+<a class="anchor" href="#Requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements<a class="anchor-link" href="#Requirements"> </a>
+</h2>
+<ul>
+<li>A Django web app. This post builds on the Django "Hello World" app described in <a href="https://stefanbschneider.github.io/blog/django/heroku/github/deployment/2021/01/19/django-heroku.html">this post</a>.<ul>
+<li>
+<a href="https://github.com/stefanbschneider/django-hello-world/releases/tag/v1.1.0">Release v1.1.0</a> belongs to this blog post.</li>
+</ul>
+</li>
+<li>A Google account you can use for Google Analytics. It's free.</li>
+</ul>
+<h2 id="Creating-the-Google-Analytics-GA4-Property">
+<a class="anchor" href="#Creating-the-Google-Analytics-GA4-Property" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating the Google Analytics GA4 Property<a class="anchor-link" href="#Creating-the-Google-Analytics-GA4-Property"> </a>
+</h2>
+<p>Go to the <a href="https://analytics.google.com/analytics/web/">Google Analytics dashboard</a> and log in if requested.
+To monitor a new Django app, create a new Google Analytics property by navigating to <code>Admin &gt; + Create Property</code>.</p>
+<p><img src="/blog/images/copied_from_nb/google-analytics/ga-new-property.png" alt=""></p>
+<p>Fill in the fields, selecting a property name, region, currency, and information regarding the monitored Django app.</p>
+<p><img src="/blog/images/copied_from_nb/google-analytics/ga-property-setup.png" alt=""></p>
+<p>Once the new property is created, select <code>Data Streams &gt; Web</code> to set up a new data stream for the Django web app.
+Paste the URL of the Django app:</p>
+<p><img src="/blog/images/copied_from_nb/google-analytics/ga-data-stream.png" alt=""></p>
+<h2 id="Adding-Google-Analytics-to-the-Django-App">
+<a class="anchor" href="#Adding-Google-Analytics-to-the-Django-App" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding Google Analytics to the Django App<a class="anchor-link" href="#Adding-Google-Analytics-to-the-Django-App"> </a>
+</h2>
+<p>Get the code snippet from the created Google Analytics data stream from the created data stream site under
+<code>Tagging Instructions &gt; Add new on-page tag &gt; Global Site Tag (gtag.js)</code>.
+The snippet should look like this (of course with the real tag ID instead of <code>YOURTAGID</code>):</p>
+<div class="highlight"><pre><span></span><span class="c">&lt;!-- Global site tag (gtag.js) - Google Analytics --&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">async</span> <span class="na">src</span><span class="o">=</span><span class="s">"https://www.googletagmanager.com/gtag/js?id=YOURTAGID"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="nb">window</span><span class="p">.</span><span class="nx">dataLayer</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">dataLayer</span> <span class="o">||</span> <span class="p">[];</span>
+  <span class="kd">function</span> <span class="nx">gtag</span><span class="p">(){</span><span class="nx">dataLayer</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);}</span>
+  <span class="nx">gtag</span><span class="p">(</span><span class="s1">'js'</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
+
+  <span class="nx">gtag</span><span class="p">(</span><span class="s1">'config'</span><span class="p">,</span> <span class="s1">'YOURTAGID'</span><span class="p">);</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</pre></div>
+<p>Copy the code snippet and paste it inside the Django app's main/base template.
+In case of my "Hello World" app, there is just a single template, which looks like this:</p>
+<div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">"en"</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">"UTF-8"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Hello World<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+
+    <span class="c">&lt;!-- Global site tag (gtag.js) - Google Analytics --&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">async</span> <span class="na">src</span><span class="o">=</span><span class="s">"https://www.googletagmanager.com/gtag/js?id=MYTAGID"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+      <span class="nb">window</span><span class="p">.</span><span class="nx">dataLayer</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">dataLayer</span> <span class="o">||</span> <span class="p">[];</span>
+      <span class="kd">function</span> <span class="nx">gtag</span><span class="p">(){</span><span class="nx">dataLayer</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">arguments</span><span class="p">);}</span>
+      <span class="nx">gtag</span><span class="p">(</span><span class="s1">'js'</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
+
+      <span class="nx">gtag</span><span class="p">(</span><span class="s1">'config'</span><span class="p">,</span> <span class="s1">'MYTAGID'</span><span class="p">);</span>
+    <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+Hello World!
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+<p>Save, commit, push, and deploy. Google Analytics will likely only work on the deployed app in production.</p>
+<p>To validate that it works, open the Django app in Chrome and open developer tools.
+Opening <code>Application &gt; Cookies</code> should show that the Django app now has cookies used for Google Analytics:</p>
+<p><img src="/blog/images/copied_from_nb/google-analytics/chrome-cookies.png" alt=""></p>
+<p>Opening the Google Analytics realtime dashboard should show that there is a visitor (this may take a few seconds):</p>
+<p><img src="/blog/images/copied_from_nb/google-analytics/ga-realtime.png" alt="">
+</p>
+<div class="flash">
+    <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg>
+    <strong>Note: </strong>Firefox may block Google Analytics or send "Do-Not-Track" Signals such that visiting the
+</div>&gt; Django app is not recognized or shown in the realtime dashboard.
+<blockquote>
+<p>For testing, turn off tracking protection or use Chrome.</p>
+</blockquote>
+<h2 id="Adding-a-Cookie-Banner">
+<a class="anchor" href="#Adding-a-Cookie-Banner" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding a Cookie Banner<a class="anchor-link" href="#Adding-a-Cookie-Banner"> </a>
+</h2>
+<p>Using cookies for Google Analytics legally requires informing users of the Django app of these cookies.
+If the app does not yet have a cookie banner, it's now time to create one.</p>
+<p>I use <a href="https://www.websitepolicies.com/create/cookie-consent-banner">WebsitePolicies</a> for generating suitable cookie banners.The service is simple and free for non-commercial apps.
+Simply fill in the questions and the service generates an HTML snippet to copy and paste
+into the Django app's base template (similar to the GA4 tag).</p>
+<p>The updated web page should show a cookie banner similar to this:</p>
+<p><img src="/blog/images/copied_from_nb/google-analytics/cookie-banner.png" alt=""></p>
+<h2 id="What-Next?">
+<a class="anchor" href="#What-Next?" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Next?<a class="anchor-link" href="#What-Next?"> </a>
+</h2>
+<ul>
+<li><a href="https://github.com/stefanbschneider/django-hello-world">Django Hello World GitHub Repository</a></li>
+<li><a href="https://stefanbschneider.github.io/blog/django/heroku/github/deployment/2021/01/19/django-heroku.html">Previous post: Building a Django App and Deploying It on Heroku</a></li>
+<li><a href="https://support.google.com/analytics/answer/9744165?hl=en">Migrating an existing Google Analytics universal property to the new GA4 (Guide by Google)</a></li>
+<li><a href="https://stefanbschneider.github.io/blog/categories/#django">Other blog posts related to Django</a></li>
+</ul>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="stefanbschneider/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/django/google%20analytics/2021/01/21/django-google-analytics.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My personal blog on networking, machine learning, and technology in general.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/stefanbschneider" title="stefanbschneider"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/stefan_schn" title="stefan_schn"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
