@@ -58,8 +58,8 @@ annotations: false
 show_tags: true
 
 # Add your Google Analytics ID here if you have one and want to use it
-# overwritten directly in google-analytics.html
-#google_analytics: UA-133644626-5
+# tag set directly in google-analytics.html
+google_analytics: true
 
 exclude:
   - docker-compose.yml
