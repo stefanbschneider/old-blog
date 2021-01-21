@@ -24,13 +24,13 @@
 
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZW4MBJ0T3E"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TWGCQ0MSXQ"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-ZW4MBJ0T3E');
+  gtag('config', 'G-TWGCQ0MSXQ');
 </script>
 
 
@@ -228,17 +228,15 @@ Opening <code>Application &gt; Cookies</code> should show that the Django app no
 </p>
 <div class="flash">
     <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg>
-    <strong>Note: </strong>Firefox may block Google Analytics or send "Do-Not-Track" Signals such that visiting the
-</div>&gt; Django app is not recognized or shown in the realtime dashboard.
-<blockquote>
-<p>For testing, turn off tracking protection or use Chrome.</p>
-</blockquote>
+    <strong>Note: </strong>Firefox may block Google Analytics or send "Do-Not-Track" Signals such that visiting the Django app is not recognized or shown in the realtime dashboard. For testing, turn off tracking protection or use Chrome.
+</div>
 <h2 id="Adding-a-Cookie-Banner">
 <a class="anchor" href="#Adding-a-Cookie-Banner" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding a Cookie Banner<a class="anchor-link" href="#Adding-a-Cookie-Banner"> </a>
 </h2>
 <p>Using cookies for Google Analytics legally requires informing users of the Django app of these cookies.
 If the app does not yet have a cookie banner, it's now time to create one.</p>
-<p>I use <a href="https://www.websitepolicies.com/create/cookie-consent-banner">WebsitePolicies</a> for generating suitable cookie banners.The service is simple and free for non-commercial apps.
+<p>I use <a href="https://www.websitepolicies.com/create/cookie-consent-banner">WebsitePolicies</a> for generating suitable cookie banners.
+The service is simple and free for non-commercial apps.
 Simply fill in the questions and the service generates an HTML snippet to copy and paste
 into the Django app's base template (similar to the GA4 tag).</p>
 <p>The updated web page should show a cookie banner similar to this:</p>
