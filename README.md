@@ -11,6 +11,9 @@ https://stefanbschneider.github.io/blog/
 
 _powered by [fastpages](https://github.com/fastai/fastpages)_
 
+This repo needs to be public for the utterance.es comment section to work on the blog, which uses issues inside this repo. 
+See [fastpages readme](https://github.com/fastai/fastpages#enabling-comments).
+
 
 ## What To Do Next?
 
