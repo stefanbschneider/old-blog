@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Lessons Learned from Leading My First Project | Stefan’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Lessons Learned from Leading My First Project" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Seven lessons learned from leading my first project, RealVNF." />
+<meta property="og:description" content="Seven lessons learned from leading my first project, RealVNF." />
+<link rel="canonical" href="https://stefanbschneider.github.io/blog/leadership/2021/01/31/my-first-project.html" />
+<meta property="og:url" content="https://stefanbschneider.github.io/blog/leadership/2021/01/31/my-first-project.html" />
+<meta property="og:site_name" content="Stefan’s Blog" />
+<meta property="og:image" content="https://stefanbschneider.github.io/blog/images/logos/realvnf.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-31T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://stefanbschneider.github.io/blog/leadership/2021/01/31/my-first-project.html","@type":"BlogPosting","headline":"Lessons Learned from Leading My First Project","dateModified":"2021-01-31T00:00:00-06:00","datePublished":"2021-01-31T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/realvnf.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/leadership/2021/01/31/my-first-project.html"},"description":"Seven lessons learned from leading my first project, RealVNF.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://stefanbschneider.github.io/blog/feed.xml" title="Stefan's Blog" /><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RDWKTYTDBL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RDWKTYTDBL');
+</script>
+
+
+<!--for cookie banner (from websitepolicies.com)-->
+<link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Stefan&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Lessons Learned from Leading My First Project</h1><p class="page-description">Seven lessons learned from leading my first project, RealVNF.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-01-31T00:00:00-06:00" itemprop="datePublished">
+        Jan 31, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      8 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#leadership">leadership</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#lessons-learned-from-leading-my-first-project">Lessons Learned from Leading my First Project</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#7-lessons-learned">7 Lessons Learned</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#put-effort-into-recruiting-the-right-people">Put Effort Into Recruiting the Right People</a></li>
+<li class="toc-entry toc-h3"><a href="#talk-to-potential-users-early">Talk to Potential Users Early</a></li>
+<li class="toc-entry toc-h3"><a href="#start-small-scale-quickly">Start Small, Scale Quickly</a></li>
+<li class="toc-entry toc-h3"><a href="#focus-on-just-a-few-topics-at-once">Focus on Just a Few Topics at Once</a></li>
+<li class="toc-entry toc-h3"><a href="#planning-is-everything-the-plan-is-nothing">Planning is Everything. The Plan is Nothing.</a></li>
+<li class="toc-entry toc-h3"><a href="#clear-frequent-and-open-communication-within-the-team">Clear, Frequent, and Open Communication Within the Team</a></li>
+<li class="toc-entry toc-h3"><a href="#embrace-bureaucracy">Embrace Bureaucracy</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#thank-you">Thank You</a></li>
+<li class="toc-entry toc-h2"><a href="#further-information">Further Information</a></li>
+</ul>
+</li>
+</ul><h1 id="lessons-learned-from-leading-my-first-project">
+<a class="anchor" href="#lessons-learned-from-leading-my-first-project" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lessons Learned from Leading my First Project</h1>
+
+<p>Today is the last day of my first bigger project, <a href="https://realvnf.github.io/">RealVNF</a>, which I have been leading for 27 months (Nov. 2018 - Jan. 2021). Early 2018, I applied for the project through the <a href="https://softwarecampus.de/en/">Software Campus</a> and received a €100k grant for hiring student research assistants, traveling, equipment, etc. I also had the opportunity to participate in several leadership trainings organized by companies across Germany. The project itself was research-focused and a collaboration with researchers from Huawei Germany (more info the <a href="https://realvnf.github.io/">website</a>).</p>
+
+<p>I found that leading the project was surprisingly challenging but, in the end, definitely successful and a great experience. This blog post reflects on the last 27 months and summarizes seven lessons learned from a leadership/project management perspective.</p>
+
+<p><img src="/blog/images/logos/realvnf.png" alt="" title='")
+![](/blog/images/logos/upb.png "'>
+![](/blog/images/logos/huawei.png “”)</p>
+
+<h2 id="7-lessons-learned">
+<a class="anchor" href="#7-lessons-learned" aria-hidden="true"><span class="octicon octicon-link"></span></a>7 Lessons Learned</h2>
+
+<h3 id="put-effort-into-recruiting-the-right-people">
+<a class="anchor" href="#put-effort-into-recruiting-the-right-people" aria-hidden="true"><span class="octicon octicon-link"></span></a>Put Effort Into Recruiting the Right People</h3>
+
+<p>Recruiting the right people for the project was very important. Most of the people I hired at the beginning stayed until the end of the project.</p>
+
+<p>Initially, I posted the job openings broadly online and received many applications. I also directly asked talented people I knew to apply. To avoid interviewing dozens of applicants, I introduced a small programming exercise that applicants had to submit. It was doable in maybe 1-3 hours using basic Python and tools like GitHub. I invited applicants who finished this first task to an interview, asking them to read a selected research paper up front and prepare to summarize it during the interview.</p>
+
+<p>Both tasks meant initial extra work for both me and the applicants but helped to select the most suitable candidates for the project. In the end, I got to work with motivated and talented people, who made the project a success.</p>
+
+<h3 id="talk-to-potential-users-early">
+<a class="anchor" href="#talk-to-potential-users-early" aria-hidden="true"><span class="octicon octicon-link"></span></a>Talk to Potential Users Early</h3>
+
+<p>When preparing the initial project plan, of course, I discussed it with people in my group at university. Still, it was only when talking to the researchers at Huawei, I understood that they had a very different perspective on the problem we were trying to solve. We spent the first months discussing and aligning our understanding of the problem and possible solution approaches. These discussions were very valuable to ensure that the work in the project was actually relevant and helpful in practice. As a leading company in networking, Huawei is a potential user of our developed coordination schemes and thus was an ideal project partner.</p>
+
+<p>Especially in academia, it is easy to get excited about an idea without properly thinking (or even understanding) its relevance in practice. Whether in academia or industry, I believe it is very important to talk to potential users/customers early and understand their needs before designing a solution. This is related to the concept of <a href="https://www.interaction-design.org/literature/topics/design-thinking">design thinking</a>.</p>
+
+<h3 id="start-small-scale-quickly">
+<a class="anchor" href="#start-small-scale-quickly" aria-hidden="true"><span class="octicon octicon-link"></span></a>Start Small, Scale Quickly</h3>
+
+<p>When starting the project, we had tons of interesting ideas and thought of a variety of relevant problem aspects that we wanted to address. Creating an approach from scratch that incorporates all ideas and considers all problem aspects would have been prohibitively complex. Instead, it was important to quickly identify the most important aspects and most promising ideas and simplify everything else. This helped to get started quickly.</p>
+
+<p>Once the simple approach worked, we could extend it to integrate more ideas and address more problem aspects. It is also helpful to have a working prototype at all times: First for the smallest and simplest case, then for more and more complex scenarios. This allows running evaluations for each stage and quantifying progress. Trying to solve everything at once can be overwhelming and makes it difficult to understand the root cause of problems or bugs. Building on something that works already is much simpler, faster, and less error prone. Versioning everything allows going back to previous, working versions if something breaks in between.</p>
+
+<p>Of course, it makes sense to think of a realistic roadmap and architecture at the beginning to have a clear direction and ensure that initial solutions can easily be extended later.</p>
+
+<h3 id="focus-on-just-a-few-topics-at-once">
+<a class="anchor" href="#focus-on-just-a-few-topics-at-once" aria-hidden="true"><span class="octicon octicon-link"></span></a>Focus on Just a Few Topics at Once</h3>
+
+<p>At the beginning, I was wondering whether I should assign all students working on the project to their own topic or to let them all work on the same topic. The former would allow more parallelization and independent work, thus less dependencies and blocking each other. Still, I found that it was much easier focusing all work on just one or two topics (of course, still with different tasks). Not only did it help drive progress faster, it also allowed more productive meetings and discussions between team members.</p>
+
+<p>While this worked well for my project with 3-4 people, it will likely be different for much larger projects.</p>
+
+<h3 id="planning-is-everything-the-plan-is-nothing">
+<a class="anchor" href="#planning-is-everything-the-plan-is-nothing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Planning is Everything. The Plan is Nothing.</h3>
+
+<p>Especially in a research-focused project like RealVNF, there is a lot of uncertainty, e.g., about experiment outcomes, where the outcome of one task affects the next one. This makes mid-/long-term planning very difficult.</p>
+
+<p>I found it useful to have a high-level “storyline” in mind with intermediate milestones, but to frequently adjust it to new insights or results. When interpreting results and adjusting the plan, we always discussed and decided next steps in the group. It is important for motivation to not only understand <em>what</em> a task is about but also <em>why</em> it is relevant. In general, frequent and clear communication within the team was crucial to quickly adapt to new outcomes and avoid wasting time.</p>
+
+<h3 id="clear-frequent-and-open-communication-within-the-team">
+<a class="anchor" href="#clear-frequent-and-open-communication-within-the-team" aria-hidden="true"><span class="octicon octicon-link"></span></a>Clear, Frequent, and Open Communication Within the Team</h3>
+
+<p>Frequent communication with and within the team is crucial. Still, I did not want to waste everyone’s time with unnecessary meetings. For us, weekly group meetings worked quite well. I structured each meeting into status updates, discussion items, and tasks for the next week and tried to limit them to at most an hour. Upcoming tasks need to be communicated very clearly (goal, scope, time) to avoid misunderstandings. Sending out short notes after each meeting helped to keep everyone on the same page.</p>
+
+<p>For an overview of past, current, and upcoming tasks, we also used GitHub issues and project boards (Kanban boards). Additionally, we defined high-level monthly goals/milestones to keep the project a bit more focused. To keep the discussion going during the week and quickly adapt to new experiment outcomes or new insights, we kept in touch via Slack constantly.</p>
+
+<p>We also did individual feedback discussions every now and then, which were really useful. In retrospective, I would do one-to-one meetings more regularly to better understand each team member’s needs and interests. It is important to encourage open communication at all times such that team members say if they have too many or too few tasks. Both is demotivating. At the same time, it can be difficult to estimate how quickly someone will progress with a task.</p>
+
+<p>Finally, while communication and tooling still worked well when working remotely during COVID-19, social meetings were no longer possible. Such social meetings were nice to hang out informally and improve team spirit.</p>
+
+<h3 id="embrace-bureaucracy">
+<a class="anchor" href="#embrace-bureaucracy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Embrace Bureaucracy</h3>
+
+<p>I suppose any bigger project comes with bureaucracy. In my case, I had to communicate with the funding partner and the university’s administration. Sometimes, I was surprised by the amount of rules, formulas, and processes for hiring people, traveling, and buying equipment - even with the money available (i.e., after securing the grant).</p>
+
+<p>As a small anecdote, I tried to hire student research assistants for the project to start with the beginning of the project in November. Unfortunately, this was not possible and I was told that new contracts could not start at the end of a year. I had to wait until January for hiring the students. In January, I was asked why I did not follow my original budget plan and did not spend any money on staff during the first two months (November and December)…</p>
+
+<p>Still, while some rules may be a bit bizarre, all people in the administration were friendly and helpful. I understood that I had to identify the right people to ask and keep asking persistently to eventually understand the rules and get what I needed.</p>
+
+<h2 id="thank-you">
+<a class="anchor" href="#thank-you" aria-hidden="true"><span class="octicon octicon-link"></span></a>Thank You</h2>
+
+<p>Leading this first project was a great experience and an amazing opportunity. I want to thank everyone directly or indirectly involved in the project! Particularly,</p>
+
+<ul>
+  <li>thank you to my colleagues at Paderborn University, the project partners at Huawei, and all student research assistants. It was a pleasure to work with you!</li>
+  <li>thank you to Software Campus, which provided the framework and opportunity for this project!</li>
+  <li>thank you to the German Ministry for Education and Research (BMBF) for providing funding! This also means thank you to everyone paying taxes in Germany :)</li>
+</ul>
+
+<p><img src="/blog/images/logos/swc.png" alt="" title='")
+![](/blog/images/logos/bmbf.jpg "'></p>
+
+<h2 id="further-information">
+<a class="anchor" href="#further-information" aria-hidden="true"><span class="octicon octicon-link"></span></a>Further Information</h2>
+
+<ul>
+  <li><a href="https://realvnf.github.io/">RealVNF Project Website and Outcomes</a></li>
+  <li><a href="https://softwarecampus.de/en/project/realvnf-improved-coordination-of-chained-vnfs-under-realistic-conditions/">RealVNF Official Project Description</a></li>
+  <li><a href="https://github.com/RealVNF">RealVNF GitHub Repositories</a></li>
+  <li><a href="https://softwarecampus.de/en/">Software Campus</a></li>
+  <li><a href="https://stefanbschneider.github.io/blog/categories/#leadership">All Blog Posts on Leadership</a></li>
+</ul>
+
+  </div><a class="u-url" href="/blog/leadership/2021/01/31/my-first-project.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My personal blog on networking, machine learning, and technology in general.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/stefanbschneider" title="stefanbschneider"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/stefan_schn" title="stefan_schn"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
