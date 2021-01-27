@@ -12,7 +12,7 @@ Today is the last day of my first bigger project, [RealVNF](https://realvnf.gith
 
 I found that leading the project was surprisingly challenging but, in the end, definitely successful and a great experience. This blog post reflects on the last 27 months and summarizes seven lessons learned from a leadership/project management perspective.
 
-![]({{ site.baseurl }}/images/logos/realvnf.png "Project Logo [^1]")
+![]({{ site.baseurl }}/images/logos/realvnf.png "RealVNF logo designed with DesignEvo (www.designevo.com).")
 
 
 # 7 Lessons Learned
@@ -87,6 +87,3 @@ Leading this first project was a great experience and an amazing opportunity. I 
 * [RealVNF GitHub Repositories](https://github.com/RealVNF)
 * [Software Campus](https://softwarecampus.de/en/)
 * [All Blog Posts on Leadership](https://stefanbschneider.github.io/blog/categories/#leadership)
-
-
-[^1]: RealVNF logo made with [DesignEvo](https://www.designevo.com/).
