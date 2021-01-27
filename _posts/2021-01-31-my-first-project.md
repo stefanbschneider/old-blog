@@ -12,17 +12,9 @@ Today is the last day of my first bigger project, [RealVNF](https://realvnf.gith
 
 I found that leading the project was surprisingly challenging but, in the end, definitely successful and a great experience. This blog post reflects on the last 27 months and summarizes seven lessons learned from a leadership/project management perspective.
 
-![]({{ site.baseurl }}/images/logos/realvnf.png "RealVNF Logo")
-![]({{ site.baseurl }}/images/logos/upb.png "UPB Logo")
-![]({{ site.baseurl }}/images/logos/huawei.png "Huawei Logo")
+![]({{ site.baseurl }}/images/logos/realvnf.png "")
 
-
-<p align="center">
-    <img src="{{ site.baseurl }}/images/logos/realvnf.png" height="150" hspace="30"/>
-    <img src="{{ site.baseurl }}/images/logos/upb.png" width="200" hspace="30"/>
-    <img src="{{ site.baseurl }}/images/logos/huawei.png" width="250" hspace="30"/>
-</p>
-
+<sup>RealVNF logo made with [DesignEvo](https://www.designevo.com/).</sup>
 
 # 7 Lessons Learned
 
@@ -86,8 +78,7 @@ Leading this first project was a great experience and an amazing opportunity. I 
 * thank you to Software Campus, which provided the framework and opportunity for this project!
 * thank you to the German Ministry for Education and Research (BMBF) for providing funding! This also means thank you to everyone paying taxes in Germany :)
 
-![]({{ site.baseurl }}/images/logos/swc.png "")
-![]({{ site.baseurl }}/images/logos/bmbf.jpg "")
+<img src="{{ site.baseurl }}/images/logos/swc.png" height="150" hspace="30"/>
 
 
 # Further Information
