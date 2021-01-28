@@ -36,6 +36,11 @@ url: "https://stefanbschneider.github.io" # the base hostname & protocol for you
 #
 baseurl: "/blog" # the subpath of your site, e.g. "/blog".
 
+# global permalink structure: https://jekyllrb.com/docs/permalinks/
+# default: permalink: /:categories/:year/:month/:day/:title:output_ext
+# customized to avoid including categories and date, which I may change later and could break links; also drop ext
+permalink: /:title
+
 # Github and twitter are optional:
 minima:
   social_links:
