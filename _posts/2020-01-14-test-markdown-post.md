@@ -1,5 +1,6 @@
 ---
 toc: true
+comments: true
 layout: post
 author: fastpages
 description: A minimal example of using markdown with fastpages.

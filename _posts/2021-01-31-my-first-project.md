@@ -1,5 +1,6 @@
 ---
 toc: true
+comments: true
 layout: post
 description: Seven lessons learned from leading my first project, RealVNF.
 categories: [leadership]
