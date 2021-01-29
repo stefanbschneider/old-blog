@@ -132,6 +132,7 @@ window.onload = wrap_img;
 
   <div class="post-content e-content" itemprop="articleBody">
     <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#requirements">Requirements</a></li>
 </ul><p>Most Django apps store and work with data, e.g., entered by users.
 Django supports multiple relational databases for persistent storage of such data out of the box.
 In this blog post, I show how to a database to a Django app.
@@ -144,7 +145,30 @@ The number of clicks is stored in a database and displayed in the app.</p>
 
 <p>The whole process is very simple as Django does most of the work in the background: Creating the database, making the queries, etc.</p>
 
-  </div><a class="u-url" href="/blog/django-db" hidden></a>
+<h1 id="requirements">
+<a class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h1>
+
+<ul>
+  <li>A Django app. For example, the Django “Hello World” App.
+    <ul>
+      <li>
+<a href="https://github.com/stefanbschneider/django-hello-world">GitHub repository</a>. This blog post corresponds to <a href="https://github.com/stefanbschneider/django-hello-world/releases/tag/v1.2.0">release v1.2</a>.</li>
+      <li><a href="https://stefanbschneider.github.io/blog/django-heroku">Initial blog post on building and deploying the Django app on Heroku</a></li>
+    </ul>
+  </li>
+  <li>For automated deployment, a free <a href="https://dashboard.heroku.com/">Heroku</a> and <a href="https://github.com/">GitHub</a> account.</li>
+</ul>
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="stefanbschneider/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/django-db" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
