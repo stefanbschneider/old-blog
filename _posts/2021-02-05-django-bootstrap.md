@@ -6,10 +6,10 @@ layout: post
 title: Using Bootstrap to Style a Django App
 description:  Using the crispy tag and Bootstrap 5 for nicer styling of Django apps.
 image: images/logos/bootstrap.png
-categories: [django, bootstrap]
+categories: [python, django, bootstrap]
 ---
 
-Django allows building simple (and complex) web apps quickly, using [Django Templates](https://docs.djangoproject.com/en/3.1/ref/templates/) for rendering.
+[Django](https://www.djangoproject.com/) allows building simple (and complex) web apps quickly, using [Django Templates](https://docs.djangoproject.com/en/3.1/ref/templates/) for rendering.
 By default, forms, buttons, and other elements are not styled and look quite ugly:
 
 Using [Bootstrap](https://getbootstrap.com/) and [`django-crispy-forms`](https://django-crispy-forms.readthedocs.io/en/latest/index.html),
