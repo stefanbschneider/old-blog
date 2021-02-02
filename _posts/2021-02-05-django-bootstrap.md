@@ -21,6 +21,8 @@ As an example, I extend my [Django "Hello World" App](https://github.com/stefanb
 (described in a [previous post](https://stefanbschneider.github.io/blog/django-heroku))
 by adding a simple form and rendering it with Bootstrap 5 and `crispy`.
 
+TODO: add a simple "name" field, which is used to then print "Name XY says Hello World! + counter"
+Don't save name to DB
 
 # Installing Bootstrap and `django-crispy-forms`
 
