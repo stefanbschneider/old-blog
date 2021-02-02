@@ -239,14 +239,12 @@ In <code class="language-plaintext highlighter-rouge">helloworld/views.py</code>
 
 <p>Finally, I need to adjust the template to add a button and display the number of times it was clicked (<code class="language-plaintext highlighter-rouge">helloworld/templates/helloworld/index.html</code>):</p>
 
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-Hello World! ({{ clicks }}x)
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Hello World! ({{ clicks }}x)
 
 <span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"{% url 'helloworld:index' %}"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
     {% csrf_token %}
     <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">name=</span><span class="s">"hello-world-button"</span><span class="nt">&gt;</span>Greet the world!<span class="nt">&lt;/button&gt;</span>
 <span class="nt">&lt;/form&gt;</span>
-
 </code></pre></div></div>
 
 <p>When running the app, it should now look like this:</p>
@@ -333,7 +331,7 @@ The available databases on Heroku are listed in the <a href="https://data.heroku
         </p>
       </div>
       <div class="footer-col">
-        <p>My personal blog on networking, machine learning, and technology in general.</p>
+        <p>Things I learned or want to learn.</p>
       </div>
     </div>
 
