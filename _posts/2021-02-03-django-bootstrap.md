@@ -14,8 +14,7 @@ By default, forms, buttons, and other elements are not styled and look quite ugl
 ![Django form without Bootstrap]({{ site.baseurl }}/images/django-bootstrap/form-ugly.png "Django form without styling.")
 
 Using [Bootstrap](https://getbootstrap.com/) and [`django-crispy-forms`](https://django-crispy-forms.readthedocs.io/en/latest/index.html),
-the rendered templates can easily be improved to look much nicer 
-- without having to adjust styling manually. For example:
+the rendered templates can easily be improved to look much nicer, without having to adjust styling manually. For example:
 
 ![Django form with Bootstrap]({{ site.baseurl }}/images/django-bootstrap/form-crispy.png "Django form styled with Bootstrap.")
 
