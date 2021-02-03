@@ -29,6 +29,7 @@ Especially with many or large forms, `django-crispy-forms` becomes useful to red
 
 # Installing `django-crispy-forms`
 
+Install the dependency and also add it to `requirements.txt`.
 ```
 pip install django-crispy-forms
 ```
@@ -122,7 +123,8 @@ Finally, show the form in the `index.html` template:
 
 Now, when running the development server, the app shows the new form:
 ![Ugly form](django-bootstrap/form-ugly.png)
-The form does not yet use Bootstrap and is still quite ugly!
+The "Hello World" message should display the entered username and date as well as the total click count.
+However, the form does not yet use Bootstrap and is still quite ugly!
 
 
 ## Making the Form Pretty
