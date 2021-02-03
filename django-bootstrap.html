@@ -8,16 +8,16 @@
 <meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Using Bootstrap to Style a Django App" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Using the crispy tag and Bootstrap 5 for nicer styling of Django apps." />
-<meta property="og:description" content="Using the crispy tag and Bootstrap 5 for nicer styling of Django apps." />
+<meta name="description" content="Using the crispy tag and Bootstrap for nicer styling of Django apps." />
+<meta property="og:description" content="Using the crispy tag and Bootstrap for nicer styling of Django apps." />
 <link rel="canonical" href="https://stefanbschneider.github.io/blog/django-bootstrap" />
 <meta property="og:url" content="https://stefanbschneider.github.io/blog/django-bootstrap" />
 <meta property="og:site_name" content="Stefan’s Blog" />
 <meta property="og:image" content="https://stefanbschneider.github.io/blog/images/logos/bootstrap.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2021-02-05T00:00:00-06:00" />
+<meta property="article:published_time" content="2021-02-03T00:00:00-06:00" />
 <script type="application/ld+json">
-{"url":"https://stefanbschneider.github.io/blog/django-bootstrap","@type":"BlogPosting","headline":"Using Bootstrap to Style a Django App","dateModified":"2021-02-05T00:00:00-06:00","datePublished":"2021-02-05T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/bootstrap.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/django-bootstrap"},"description":"Using the crispy tag and Bootstrap 5 for nicer styling of Django apps.","@context":"https://schema.org"}</script>
+{"url":"https://stefanbschneider.github.io/blog/django-bootstrap","@type":"BlogPosting","headline":"Using Bootstrap to Style a Django App","dateModified":"2021-02-03T00:00:00-06:00","datePublished":"2021-02-03T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/bootstrap.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/django-bootstrap"},"description":"Using the crispy tag and Bootstrap for nicer styling of Django apps.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://stefanbschneider.github.io/blog/feed.xml" title="Stefan's Blog" /><!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RDWKTYTDBL"></script>
@@ -100,18 +100,21 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Using Bootstrap to Style a Django App</h1><p class="page-description">Using the crispy tag and Bootstrap 5 for nicer styling of Django apps.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-02-05T00:00:00-06:00" itemprop="datePublished">
-        Feb 5, 2021
+    <h1 class="post-title p-name" itemprop="name headline">Using Bootstrap to Style a Django App</h1><p class="page-description">Using the crispy tag and Bootstrap for nicer styling of Django apps.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-02-03T00:00:00-06:00" itemprop="datePublished">
+        Feb 3, 2021
       </time>
        • <span class="read-time" title="Estimated read time">
     
     
-      1 min read
+      4 min read
     
 </span></p>
 
     
       <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#python">python</a>
+        &nbsp;
       
         <a class="category-tags-link" href="/blog/categories/#django">django</a>
         &nbsp;
@@ -126,16 +129,18 @@ window.onload = wrap_img;
 
   <div class="post-content e-content" itemprop="articleBody">
     <ul class="section-nav">
-<li class="toc-entry toc-h1"><a href="#installing-bootstrap-and-django-crispy-forms">Installing Bootstrap and django-crispy-forms</a>
+<li class="toc-entry toc-h1"><a href="#installing-django-crispy-forms">Installing django-crispy-forms</a></li>
+<li class="toc-entry toc-h1"><a href="#building-a-crispy-form">Building a crispy Form</a>
 <ul>
-<li class="toc-entry toc-h2"><a href="#adding-bootstrap-to-the-django-app">Adding Bootstrap to the Django App</a></li>
-<li class="toc-entry toc-h2"><a href="#installing-django-crispy-forms">Installing django-crispy-forms</a></li>
+<li class="toc-entry toc-h2"><a href="#creating-a-django-form">Creating a Django Form</a></li>
+<li class="toc-entry toc-h2"><a href="#making-the-form-pretty">Making the Form Pretty</a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h1"><a href="#building-a-crispy-form">Building a crispy Form</a></li>
 <li class="toc-entry toc-h1"><a href="#what-next">What Next?</a></li>
-</ul><p>Django allows building simple (and complex) web apps quickly, using <a href="https://docs.djangoproject.com/en/3.1/ref/templates/">Django Templates</a> for rendering.
+</ul><p><a href="https://www.djangoproject.com/">Django</a> allows building simple (and complex) web apps quickly, using <a href="https://docs.djangoproject.com/en/3.1/ref/templates/">Django Templates</a> for rendering.
 By default, forms, buttons, and other elements are not styled and look quite ugly:</p>
+
+<p><img src="django-bootstrap/form-ugly.png" alt="ugly form"></p>
 
 <p>Using <a href="https://getbootstrap.com/">Bootstrap</a> and <a href="https://django-crispy-forms.readthedocs.io/en/latest/index.html"><code class="language-plaintext highlighter-rouge">django-crispy-forms</code></a>,
 the rendered templates can easily be improved to look much nicer</p>
@@ -143,29 +148,176 @@ the rendered templates can easily be improved to look much nicer</p>
   <li>without having to adjust styling manually. For example:</li>
 </ul>
 
+<p><img src="django-bootstrap/form-crispy.png" alt="nicer form"></p>
+
 <p>As an example, I extend my <a href="https://github.com/stefanbschneider/django-hello-world">Django “Hello World” App</a>
 (described in a <a href="https://stefanbschneider.github.io/blog/django-heroku">previous post</a>)
-by adding a simple form and rendering it with Bootstrap 5 and <code class="language-plaintext highlighter-rouge">crispy</code>.</p>
+by adding a simple form and rendering it with Bootstrap and <code class="language-plaintext highlighter-rouge">django-crispy-forms</code>.
+All it does is asking for the user’s name and a date and then displaying <code class="language-plaintext highlighter-rouge">&lt;username&gt; says "Hello World!" on &lt;date&gt;</code> and a counter of how often the button has been clicked.
+Still, the small example illustrates how to use Bootstrap and <code class="language-plaintext highlighter-rouge">django-crispy-forms</code>.
+Especially with many or large forms, <code class="language-plaintext highlighter-rouge">django-crispy-forms</code> becomes useful to reduce repetitive boilerplate.</p>
 
-<p>TODO: add a simple “name” field, which is used to then print “Name XY says Hello World! + counter”
-Don’t save name to DB</p>
-
-<h1 id="installing-bootstrap-and-django-crispy-forms">
-<a class="anchor" href="#installing-bootstrap-and-django-crispy-forms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing Bootstrap and <code class="language-plaintext highlighter-rouge">django-crispy-forms</code>
+<h1 id="installing-django-crispy-forms">
+<a class="anchor" href="#installing-django-crispy-forms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing <code class="language-plaintext highlighter-rouge">django-crispy-forms</code>
 </h1>
 
-<h2 id="adding-bootstrap-to-the-django-app">
-<a class="anchor" href="#adding-bootstrap-to-the-django-app" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding Bootstrap to the Django App</h2>
+<p>Install the dependency and also add it to <code class="language-plaintext highlighter-rouge">requirements.txt</code>.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install django-crispy-forms
+</code></pre></div></div>
 
-<h2 id="installing-django-crispy-forms">
-<a class="anchor" href="#installing-django-crispy-forms" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installing <code class="language-plaintext highlighter-rouge">django-crispy-forms</code>
-</h2>
+<p>Add <code class="language-plaintext highlighter-rouge">crispy_forms</code> inside <code class="language-plaintext highlighter-rouge">settings.py</code>:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">...</span>
+    <span class="s">'crispy_forms'</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<p>Enable the Bootstrap 4 template pack, adding the following line to <code class="language-plaintext highlighter-rouge">settings.py</code>:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">CRISPY_TEMPLATE_PACK</span> <span class="o">=</span> <span class="s">'bootstrap4'</span>
+</code></pre></div></div>
+<p>So far, there is no official <code class="language-plaintext highlighter-rouge">'bootstrap5'</code> template pack, but the <code class="language-plaintext highlighter-rouge">'bootstrap4'</code> pack also seems to work with Bootstrap 5, which I use later.</p>
 
 <h1 id="building-a-crispy-form">
 <a class="anchor" href="#building-a-crispy-form" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building a <code class="language-plaintext highlighter-rouge">crispy</code> Form</h1>
 
+<h2 id="creating-a-django-form">
+<a class="anchor" href="#creating-a-django-form" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating a Django Form</h2>
+
+<p>As an example, I create a new form that allows users to specify their name and an arbitrary date that will be displayed in the “Hello World” app.
+For that, I create <code class="language-plaintext highlighter-rouge">helloworld/forms.py</code> with the following content:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+
+
+<span class="k">class</span> <span class="nc">HelloWorldForm</span><span class="p">(</span><span class="n">forms</span><span class="p">.</span><span class="n">Form</span><span class="p">):</span>
+    <span class="s">"""Form asking for the user's name and an arbitrary date, both used inside the displayed 'Hello World' text."""</span>
+    <span class="n">username</span> <span class="o">=</span> <span class="n">forms</span><span class="p">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">'Your Name'</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">forms</span><span class="p">.</span><span class="n">DateField</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">'An arbitrary date'</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">today</span><span class="p">,</span>
+                           <span class="n">widget</span><span class="o">=</span><span class="n">forms</span><span class="p">.</span><span class="n">widgets</span><span class="p">.</span><span class="n">DateInput</span><span class="p">(</span><span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s">'type'</span><span class="p">:</span> <span class="s">'date'</span><span class="p">}),</span>
+                           <span class="n">help_text</span><span class="o">=</span><span class="s">'The entered name and date will be displayed temporarily but publicly in the '</span>
+                                     <span class="s">'generated "Hello World" message. It will not be stored.'</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Most field arguments are optional but provide additional information for <code class="language-plaintext highlighter-rouge">django-crispy-forms</code> to display in the
+Bootstrap form.</p>
+
+<p>I then use this form inside <code class="language-plaintext highlighter-rouge">views.py</code> for my index view (the only view of the “Hello World” app so far):</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c1"># retriever counter model instance from DB or create it if it doesn't exist yet
+</span>    <span class="n">counter</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">.</span><span class="n">objects</span><span class="p">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'hello-world-button'</span><span class="p">)</span>
+
+    <span class="c1"># increment counter when a POST request arrives (from the button click)
+</span>    <span class="c1"># see previous blog post: https://stefanbschneider.github.io/blog/django-db
+</span>    <span class="k">if</span> <span class="n">request</span><span class="p">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">'POST'</span><span class="p">:</span>
+        <span class="n">counter</span><span class="p">.</span><span class="n">value</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">counter</span><span class="p">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="c1"># and get the values filled in form
+</span>        <span class="n">form</span> <span class="o">=</span> <span class="n">HelloWorldForm</span><span class="p">(</span><span class="n">request</span><span class="p">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="p">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="n">form</span><span class="p">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">'username'</span><span class="p">]</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">form</span><span class="p">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">'date'</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">HelloWorldForm</span><span class="p">()</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="s">'Nobody'</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="n">date</span><span class="p">.</span><span class="n">today</span><span class="p">()</span>
+
+    <span class="n">context</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">'clicks'</span><span class="p">:</span> <span class="n">counter</span><span class="p">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="s">'form'</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+        <span class="s">'username'</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+        <span class="s">'date'</span><span class="p">:</span> <span class="n">date</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">'helloworld/index.html'</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Finally, show the form in the <code class="language-plaintext highlighter-rouge">index.html</code> template:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"alert alert-success"</span> <span class="na">role=</span><span class="s">"alert"</span><span class="nt">&gt;</span>
+    {{ username }} says: "Hello World!" on {{ date }}. (Button clicked {{ clicks }}x in total.)
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"{% url 'helloworld:index' %}"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+    {% csrf_token %}
+    {{ form }}
+    <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">class=</span><span class="s">"btn btn-primary"</span><span class="nt">&gt;</span>Greet the world!<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div></div>
+
+<p>Now, when running the development server, the app shows the new form:
+<img src="django-bootstrap/form-ugly.png" alt="Ugly form">
+The “Hello World” message should display the entered username and date as well as the total click count.
+However, the form does not yet use Bootstrap and is still quite ugly!</p>
+
+<h2 id="making-the-form-pretty">
+<a class="anchor" href="#making-the-form-pretty" aria-hidden="true"><span class="octicon octicon-link"></span></a>Making the Form Pretty</h2>
+
+<p>To make the form look nicer, I first include Bootstrap.
+For using Bootstrap, simply include the Bootstrap CCS and JavaScript inside the head of the Django app’s main/base template.
+The <a href="https://getbootstrap.com/docs/5.0/getting-started/introduction/">Bootstrap website</a> has the latest instructions.</p>
+
+<p>For my “Hello World” Django app, I simply add the following lines inside <code class="language-plaintext highlighter-rouge">helloworld/templates/helloworld/index.html</code>:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Hello World<span class="nt">&lt;/title&gt;</span>
+    
+    {#  Bootstrap  #}
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">"https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"</span> <span class="na">rel=</span><span class="s">"stylesheet"</span> <span class="na">integrity=</span><span class="s">"sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"</span> <span class="na">integrity=</span><span class="s">"sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"</span> <span class="na">crossorigin=</span><span class="s">"anonymous"</span><span class="nt">&gt;&lt;/script&gt;</span>
+
+<span class="c">&lt;!--    other includes --&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="c">&lt;!-- body --&gt;</span>
+</code></pre></div></div>
+<p>This loads the new Bootstrap 5 from the JSDeliver CDN network so it can be used within the Django app templates.
+Now, the alert and button should already look nicer, but the form fields will still look ugly.</p>
+
+<p>To also render the form fields with Bootstrap, I use <code class="language-plaintext highlighter-rouge">django-crispy-forms</code>.
+All it takes, is loading <code class="language-plaintext highlighter-rouge">crispy</code> and passing the form to <code class="language-plaintext highlighter-rouge">crispy</code> inside <code class="language-plaintext highlighter-rouge">index.html</code>:</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{% load crispy_forms_tags %}
+
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"alert alert-success"</span> <span class="na">role=</span><span class="s">"alert"</span><span class="nt">&gt;</span>
+    {{ username }} says: "Hello World!" on {{ date }}. (Button clicked {{ clicks }}x in total.)
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">"{% url 'helloworld:index' %}"</span> <span class="na">method=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+    {% csrf_token %}
+    {{ form | crispy }}
+    <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"submit"</span> <span class="na">class=</span><span class="s">"btn btn-primary"</span><span class="nt">&gt;</span>Greet the world!<span class="nt">&lt;/button&gt;</span>
+<span class="nt">&lt;/form&gt;</span>
+</code></pre></div></div>
+
+<p>Now, the Django app should be rendered with Bootstrap and already look much nicer:
+<img src="django-bootstrap/form-crispy.png" alt="nicer form"></p>
+
+<p>The nice thing is that <code class="language-plaintext highlighter-rouge">crispy</code> will handle all the overhead of styling each form field with bootstrap,
+which is particularly useful when having many large forms inside a Django app.</p>
+
 <h1 id="what-next">
 <a class="anchor" href="#what-next" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Next?</h1>
+
+<ul>
+  <li><a href="https://github.com/stefanbschneider/django-hello-world">Django “Hello World” GitHub Repository</a></li>
+  <li><a href="https://django-hello-world-app.herokuapp.com/">Deployed “Hello World” App on Heroku</a></li>
+</ul>
+
+<p>Small example apps I built with Django and deployed on Heroku, using persistent storage:</p>
+
+<ul>
+  <li>Quotify: An example app showing inspirational quotes. [<a href="https://github.com/stefanbschneider/quotify">Code</a>] [<a href="https://django-quotify.herokuapp.com/">App</a>]</li>
+  <li>Ideally: Organize &amp; Grow Your Ideas. [<a href="https://github.com/stefanbschneider/ideally">Code</a>] [<a href="https://ideally-app.herokuapp.com/">App</a>]</li>
+  <li>FeelYa: The app that gets you! [<a href="https://github.com/stefanbschneider/feelya">Code</a>] [<a href="https://feelya-app.herokuapp.com/">App</a>]</li>
+</ul>
+
+<p>Other blog posts:</p>
+
+<ul>
+  <li><a href="https://stefanbschneider.github.io/blog/django-heroku">Related post: Building a Django App and Deploying It on Heroku</a></li>
+  <li><a href="https://stefanbschneider.github.io/blog/django-db">Previous post: Adding a Database to a Django App</a></li>
+  <li><a href="https://stefanbschneider.github.io/blog/categories/#django">Other blog posts related to Django</a></li>
+</ul>
 
   </div><!-- from https://github.com/utterance/utterances -->
 <script src="https://utteranc.es/client.js"
