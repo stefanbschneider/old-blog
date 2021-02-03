@@ -134,7 +134,11 @@ window.onload = wrap_img;
     <ul class="section-nav">
 <li class="toc-entry toc-h1"><a href="#requirements">Requirements</a></li>
 <li class="toc-entry toc-h1"><a href="#defining-a-model">Defining a Model</a></li>
-<li class="toc-entry toc-h1"><a href="#saving-the-model-in-a-database">Saving the Model in a Database</a></li>
+<li class="toc-entry toc-h1"><a href="#saving-the-model-in-a-database">Saving the Model in a Database</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#using-the-model-in-the-django-app">Using the Model in the Django App</a></li>
+</ul>
+</li>
 <li class="toc-entry toc-h1"><a href="#postgresql-db-on-heroku">PostgreSQL® DB on Heroku</a></li>
 <li class="toc-entry toc-h1"><a href="#what-next">What Next?</a></li>
 </ul><p>Most Django apps store and work with data, e.g., entered by users.
@@ -197,7 +201,8 @@ python manage.py migrate
 This code is stored in <code class="language-plaintext highlighter-rouge">helloworld/migrations</code> and should be committed to git.
 The second command then applies the adjustments to the database.</p>
 
-<p>##Using the Model in the Django App</p>
+<h2 id="using-the-model-in-the-django-app">
+<a class="anchor" href="#using-the-model-in-the-django-app" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using the Model in the Django App</h2>
 
 <p>To integrate the model into the “Hello World” app, I first create a view that handles the interaction with the model.
 In <code class="language-plaintext highlighter-rouge">helloworld/views.py</code>:</p>
@@ -249,7 +254,7 @@ In <code class="language-plaintext highlighter-rouge">helloworld/views.py</code>
 
 <p>When running the app, it should now look like this:</p>
 
-<p><img src="django-db/django-button-clicks.png" alt=""></p>
+<p><img src="/blog/images/django-db/django-button-clicks.png" alt="Screenshot"></p>
 
 <p>Clicking the button should reload the page and show an increased click count (here, “2x”).
 The click count should persist even when the app server is restarted or the app is updated.</p>
@@ -267,7 +272,7 @@ To enable persistent storage for my “Hello World” app deployed on Heroku, I 
 This database is automatically created when <a href="https://stefanbschneider.github.io/blog/django-heroku">initially setting up the Django app on Heroku</a>.
 The available databases on Heroku are listed in the <a href="https://data.heroku.com/">Heroku data dashboard</a>.</p>
 
-<p><img src="django-db/heroku-db.png" alt=""></p>
+<p><img src="/blog/images/django-db/heroku-db.png" alt="Screenshot of Heroku dashboard" title="Screenshot of the Heroku Data dashboard."></p>
 
 <p>If a database is already listed for the Django app, then persistent storage should work out of the box for the app once it is deployed.</p>
 
