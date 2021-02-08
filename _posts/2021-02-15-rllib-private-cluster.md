@@ -64,8 +64,9 @@ Once training completed, detach/close terminal with Ctrl+D.
 From the local laptop, use `ray rsync-down` to copy the result files from the cluster's head node to the local laptop:
 ```
 # ray rsync-down <cluster-config> <source> <target>
-ray rsync-down cluster.yaml ~/DeepCoMP/results/ results
+ray rsync-down cluster.yaml ~/DeepCoMP/results .
 ```
+Will be copied to local directory into `results`.
 
 ### Terminating the Cluster
 
@@ -79,4 +80,4 @@ ray down cluster.yaml
 * Update to latest ray. Fix install with `setup.py` and extra rllib
 * Allow configuring `--cluster` and `--results` for DeepCoMP CLI
 * Test with multiple nodes on the cluster. Is there a real speedup? Currently, there's just 1 worker node, so it's probably comparable to running directly on a single node.
-
+* Test running on cluster without installing env (and ray?) on workers
