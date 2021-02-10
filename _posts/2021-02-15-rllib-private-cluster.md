@@ -88,13 +88,14 @@ TensorBoard can be accessed at localhost:6006.
 
 Start cluster:
 ```
+# start the cluster (non-blocking)
 ray up cluster.yaml
+
+# forward the cluster dashboard to the local machine (this is a blocking command)
+ray dashboard cluster.yaml
 ```
 
-View dashboard: http://localhost:8265 (doesn't work!)
-* Because I'm running `ray up` on WSL!
-* But on Windows (git bash), `ray up` gets stuck and doesn't work.
-* Actually running on WSL should not be the issue. localhost should be the same on WSL and Windows
+View dashboard: http://localhost:8265
 
 Connect to cluster and run command for training.
 Note, you can attach but not detach. Thus, better to run this in a screen/tmux session.
@@ -138,6 +139,7 @@ ray down cluster.yaml
 * Done: Allow configuring `--cluster` and `--result_dir` for DeepCoMP CLI
 * Test with multiple nodes on the cluster. Is there a real speedup? Currently, there's just 1 worker node, so it's probably comparable to running directly on a single node.
     * Doesn't work! Update ray first
-* Update to latest ray. Fix install with `setup.py` and extra rllib
+* Done: Update to latest ray. Fix install with `setup.py` and extra rllib
 * Test running on cluster without installing env (and ray?) on workers
 * Some basic tests and proper CI (check example command from readme); update Readme with cluster instructions and link to blog; publish new release
+* Let Ray team know to distribute the blog post: https://discuss.ray.io/t/use-of-ray-logo-in-blog/797
