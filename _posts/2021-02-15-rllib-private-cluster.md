@@ -86,15 +86,29 @@ The nice thing about RLlib is that it can seamlessly scale from running locally 
 
 ## Preparations
 
-While there are virtually no code changes required, some preparation steps were necessary for me to get RLlib to work on our private/on-premise cluster.
+While there are virtually no code changes required in the environment, 
+some preparation steps were necessary for me to get RLlib to work on our private/on-premise cluster.
 
 ### Cluster Configuration
 
 The Ray cluster configuration is saved in a YAML file.
 My configuration file is [here]().
 
-The most relevant fields are:
-* 
+The most relevant fields concern information about the private cloud:
+```yaml
+provider:
+    type: local
+    head_ip: <head-machine-ip-or-address>
+    worker_ips:
+        - <worker1-ip>
+        - <worker2-ip>
+```
+Here, `type: local` indicates that the cluster is local/private/on premise.
+The head IP or address points to the head node, i.e., the machine that should coordinate the cluster.
+To execute commands and train my RL agent, I will later attach to the head node, start training and TensorBoard, and finally retrieve results.
+The workers are other machines in the cluster on which the training is executed.
+
+TODO: auth, num workers
 
 ### Installation
 
