@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Scaling Deep Reinforcement Learning to Training on a Private Cluster | Stefan’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Scaling Deep Reinforcement Learning to Training on a Private Cluster" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Using Ray RLlib to train a deep reinforcement learning agent (PPO) in a custom environment on a private cluster." />
+<meta property="og:description" content="Using Ray RLlib to train a deep reinforcement learning agent (PPO) in a custom environment on a private cluster." />
+<link rel="canonical" href="https://stefanbschneider.github.io/blog/rllib-private-cluster" />
+<meta property="og:url" content="https://stefanbschneider.github.io/blog/rllib-private-cluster" />
+<meta property="og:site_name" content="Stefan’s Blog" />
+<meta property="og:image" content="https://stefanbschneider.github.io/blog/images/logos/ray.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-02-15T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://stefanbschneider.github.io/blog/rllib-private-cluster","@type":"BlogPosting","headline":"Scaling Deep Reinforcement Learning to Training on a Private Cluster","dateModified":"2021-02-15T00:00:00-06:00","datePublished":"2021-02-15T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/ray.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/rllib-private-cluster"},"description":"Using Ray RLlib to train a deep reinforcement learning agent (PPO) in a custom environment on a private cluster.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://stefanbschneider.github.io/blog/feed.xml" title="Stefan's Blog" /><!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RDWKTYTDBL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RDWKTYTDBL');
+</script>
+
+
+<!--for cookie banner (from websitepolicies.com)-->
+<link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Stefan&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Scaling Deep Reinforcement Learning to Training on a Private Cluster</h1><p class="page-description">Using Ray RLlib to train a deep reinforcement learning agent (PPO) in a custom environment on a private cluster.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-02-15T00:00:00-06:00" itemprop="datePublished">
+        Feb 15, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      6 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#python">python</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#ray">ray</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#rllib">rllib</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#machine learning">machine learning</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#reinforcement learning">reinforcement learning</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#cluster">cluster</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#training-an-rl-agent-locally">Training an RL Agent Locally</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#setup">Setup</a></li>
+<li class="toc-entry toc-h2"><a href="#training">Training</a></li>
+<li class="toc-entry toc-h2"><a href="#results">Results</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#scaling-to-training-in-a-private-cluster">Scaling to Training in a Private Cluster</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#preparations">Preparations</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#cluster-configuration">Cluster Configuration</a></li>
+<li class="toc-entry toc-h3"><a href="#installation">Installation</a></li>
+<li class="toc-entry toc-h3"><a href="#ssh-access">SSH Access</a></li>
+<li class="toc-entry toc-h3"><a href="#ray-command">ray command</a></li>
+<li class="toc-entry toc-h3"><a href="#connect-to-ray-cluster">Connect to Ray cluster</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#starting-the-ray-cluster">Starting the Ray Cluster</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#on-the-local-machine">On the local machine</a></li>
+<li class="toc-entry toc-h3"><a href="#monitoring-training-progress">Monitoring Training Progress</a></li>
+<li class="toc-entry toc-h3"><a href="#retrieving-training--testing-results">Retrieving Training &amp; Testing Results</a></li>
+<li class="toc-entry toc-h3"><a href="#terminating-the-cluster">Terminating the Cluster</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#what-next">What Next?</a></li>
+<li class="toc-entry toc-h1"><a href="#todos">Todos:</a></li>
+</ul><div class="flash flash-error">
+    <svg class="octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg>
+    <strong>Warning: </strong>
+</div>
+
+<p>In this blog post, I use reinforcement learning (RL) to solve a custom optimization task (here, related to coordination in mobile networks).
+To this end, I use the scalable RL framework <a href="https://docs.ray.io/en/master/rllib.html">RLlib</a>, 
+which is part of <a href="https://github.com/ray-project/ray">Ray</a>, 
+and a <a href="https://github.com/CN-UPB/DeepCoMP">custom environment</a>, which implements the <a href="https://gym.openai.com/">OpenAI Gym</a> interface.
+As RL algorithm, I use <a href="https://openai.com/blog/openai-baselines-ppo/">proximal policy optimization (PPO)</a>, which is implemented in RLlib and configured in my environment.</p>
+
+<p>I first show how to train PPO on my environment when running locally.
+Then, to speed up training, I execute training on a private/on-premise multi-node cluster.</p>
+
+<p>While it is simple in principle, it took me a while to go from running RLlib and my custom environment locally to getting it to work on a private cluster.
+I’m hoping this guide is useful for anyone in a similar situation.
+In this blog post, I focus on the general workflow but use my specific environment as an example.
+I will cover details about my RL approach and environment in a future blog post.</p>
+
+<h1 id="training-an-rl-agent-locally">
+<a class="anchor" href="#training-an-rl-agent-locally" aria-hidden="true"><span class="octicon octicon-link"></span></a>Training an RL Agent Locally</h1>
+
+<h2 id="setup">
+<a class="anchor" href="#setup" aria-hidden="true"><span class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>Installation requires Python 3.8+ and should work on Linux, Windows, and Mac.
+Inside a virtualenv, install RLlib with</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install ray[rllib]
+</code></pre></div></div>
+
+<p>Then install the custom environment. Here, <a href="https://github.com/CN-UPB/DeepCoMP">DeepCoMP</a> as described in the readme:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install deepcomp
+</code></pre></div></div>
+
+<p>Test the installation with <code class="language-plaintext highlighter-rouge">deepcomp -h</code>, which should show the available CLI options.</p>
+
+<h2 id="training">
+<a class="anchor" href="#training" aria-hidden="true"><span class="octicon octicon-link"></span></a>Training</h2>
+
+<p>Once installation is complete, train a centralized RL agent with PPO in an example scenario.
+Note, that training will take a while (around 15min on my laptop), so running the command inside a detachable GNU screen or
+tmux session makes sense.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deepcomp --agent central --train-steps 100000 --env medium --slow-ues 3
+</code></pre></div></div>
+
+<p>This trains a centralized PPO agent for 100k training steps. 
+The additional arguments <code class="language-plaintext highlighter-rouge">--env</code> and <code class="language-plaintext highlighter-rouge">--slow-ues</code> configure my custom DeepCoMP environment (more about that in another blog post).
+During training, updates should be printed on screen and progress can be monitored with TensorBoard.
+To start TensorBoard, run (in a separate terminal):</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tensorboard --logdir results/PPO/
+</code></pre></div></div>
+<p>Here, the TensorBoard files are in <code class="language-plaintext highlighter-rouge">results/PPO/</code>, but this depends on the environment.
+Once started, TensorBoard can be accessed at localhost:6006.</p>
+
+<p><img src="/blog/images/rllib-cluster/tensorboard.png" alt="" title="TensorBoard screenshot showing training progress."></p>
+
+<h2 id="results">
+<a class="anchor" href="#results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Results</h2>
+
+<p>In the case of my environment, results are saved in the <code class="language-plaintext highlighter-rouge">results</code> directory on the project root (where <code class="language-plaintext highlighter-rouge">deepcomp</code> is installed) by default.
+To specify a custom result path, use the <code class="language-plaintext highlighter-rouge">--result-dir</code> CLI argument, which accepts relative paths.</p>
+
+<p>Files in folders prefixed with <code class="language-plaintext highlighter-rouge">PPO</code> contain neural network weights, configuration, log, and progress files generated by RLlib.
+They are useful for analyzing training progress or when loading a trained agent for inference (<code class="language-plaintext highlighter-rouge">--test</code> arg) or continued training (<code class="language-plaintext highlighter-rouge">--continue</code>).
+Additionally, folders <code class="language-plaintext highlighter-rouge">test</code> and <code class="language-plaintext highlighter-rouge">videos</code> are generated by DeepCoMP and contain easy-to-parse testing/evaluation results and rendered videos, 
+depending on the DeepCoMP CLI args (<code class="language-plaintext highlighter-rouge">--eval</code> and <code class="language-plaintext highlighter-rouge">--video</code>).</p>
+
+<p>Of course, this is just an example. Results are saved differently for each problem and environment.</p>
+
+<h1 id="scaling-to-training-in-a-private-cluster">
+<a class="anchor" href="#scaling-to-training-in-a-private-cluster" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scaling to Training in a Private Cluster</h1>
+
+<p>The nice thing about RLlib is that it can seamlessly scale from running locally to a large cluster.</p>
+
+<h2 id="preparations">
+<a class="anchor" href="#preparations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Preparations</h2>
+
+<p>While there are virtually no code changes required in the environment, 
+some preparation steps were necessary for me to get RLlib to work on our private/on-premise cluster.</p>
+
+<h3 id="cluster-configuration">
+<a class="anchor" href="#cluster-configuration" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cluster Configuration</h3>
+
+<p>The Ray cluster configuration is saved in a YAML file.
+My configuration file is <a href="https://github.com/CN-UPB/DeepCoMP/blob/dev/cluster.yaml">here</a>.</p>
+
+<p>The most relevant fields concern information about the private cluster:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">provider</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">local</span>
+    <span class="na">head_ip</span><span class="pi">:</span> <span class="s">&lt;head-machine-ip-or-address&gt;</span>
+    <span class="na">worker_ips</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">&lt;worker1-ip&gt;</span>
+        <span class="pi">-</span> <span class="s">&lt;worker2-ip&gt;</span>
+</code></pre></div></div>
+<p>Here, <code class="language-plaintext highlighter-rouge">type: local</code> indicates that the cluster is local/private/on premise.
+The head IP or address points to the head node, i.e., the machine that should coordinate the cluster.
+To execute commands and train my RL agent, I will later attach to the head node, start training and TensorBoard, and finally retrieve results.
+The workers are other machines in the cluster on which the training is executed.</p>
+
+<p>Depending on the number of workers listed under <code class="language-plaintext highlighter-rouge">worker_ips</code>, also set <code class="language-plaintext highlighter-rouge">min_workers</code> and <code class="language-plaintext highlighter-rouge">max_workers</code> to the same value.</p>
+
+<p>For authentication when logging into the workers and distributing computation across them,
+also configure <code class="language-plaintext highlighter-rouge">auth</code>:</p>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">auth</span><span class="pi">:</span>
+    <span class="na">ssh_user</span><span class="pi">:</span> <span class="s">stefan</span>
+    <span class="c1"># Optional if an ssh private key is necessary to ssh to the cluster.</span>
+    <span class="na">ssh_private_key</span><span class="pi">:</span> <span class="s">~/.ssh/id_rsa</span>
+</code></pre></div></div>
+
+<h3 id="installation">
+<a class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>To run code on the workers, install <code class="language-plaintext highlighter-rouge">ray[rllib]</code> and the custom environment <code class="language-plaintext highlighter-rouge">deepcomp</code> on each worker machine of the cluster.</p>
+
+<div class="flash flash-success">
+    <svg class="octicon octicon-checklist octicon octicon-checklist" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 1.75a.25.25 0 01.25-.25h8.5a.25.25 0 01.25.25v7.736a.75.75 0 101.5 0V1.75A1.75 1.75 0 0011.25 0h-8.5A1.75 1.75 0 001 1.75v11.5c0 .966.784 1.75 1.75 1.75h3.17a.75.75 0 000-1.5H2.75a.25.25 0 01-.25-.25V1.75zM4.75 4a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5zM4 7.75A.75.75 0 014.75 7h2a.75.75 0 010 1.5h-2A.75.75 0 014 7.75zm11.774 3.537a.75.75 0 00-1.048-1.074L10.7 14.145 9.281 12.72a.75.75 0 00-1.062 1.058l1.943 1.95a.75.75 0 001.055.008l4.557-4.45z"></path></svg>
+    <strong>Tip: </strong>
+</div>
+
+<h3 id="ssh-access">
+<a class="anchor" href="#ssh-access" aria-hidden="true"><span class="octicon octicon-link"></span></a>SSH Access</h3>
+
+<p>The head node needs <code class="language-plaintext highlighter-rouge">ssh</code> access to all worker nodes.
+Ensure the head node’s public SSH key is registered as authorized key (in <code class="language-plaintext highlighter-rouge">ssh/authorized_keys</code>) in all worker nodes.
+The head node’s private key path should be configured in the <code class="language-plaintext highlighter-rouge">cluster.yaml</code>.</p>
+
+<h3 id="ray-command">
+<a class="anchor" href="#ray-command" aria-hidden="true"><span class="octicon octicon-link"></span></a><code class="language-plaintext highlighter-rouge">ray</code> command</h3>
+
+<p>The <code class="language-plaintext highlighter-rouge">ray</code> command needs to be available on all cluster nodes.
+If <code class="language-plaintext highlighter-rouge">ray</code> is installed in a virtual environment, the easiest option is to automatically source the virtualenv on each login.
+Particularly, adding the following line to <code class="language-plaintext highlighter-rouge">.bashrc</code> will source the virtualenv:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source path/to/venv/bin/activate
+</code></pre></div></div>
+<p>Where <code class="language-plaintext highlighter-rouge">path/to/venv</code> needs to point to the virtualenv. The change is in effect after log out and back in.</p>
+
+<p>Then <code class="language-plaintext highlighter-rouge">ray --version</code> should run without errors.</p>
+
+<h3 id="connect-to-ray-cluster">
+<a class="anchor" href="#connect-to-ray-cluster" aria-hidden="true"><span class="octicon octicon-link"></span></a>Connect to Ray cluster</h3>
+
+<p>To ensure that running <code class="language-plaintext highlighter-rouge">ray</code> connects to the same cluster and the same Redis DB,
+use <code class="language-plaintext highlighter-rouge">ray.init(address='auto')</code>.
+Without argument <code class="language-plaintext highlighter-rouge">address='auto'</code>, execution on the cluster does not work.</p>
+
+<p>However, for me, adding <code class="language-plaintext highlighter-rouge">address='auto'</code> breaks local execution. 
+Hence, I added an optional CLI argument <code class="language-plaintext highlighter-rouge">--cluster</code> to my custom <code class="language-plaintext highlighter-rouge">deepcomp</code> environment, which adds <code class="language-plaintext highlighter-rouge">address='auto'</code> for running 
+the environment on a cluster without code changes.</p>
+
+<h2 id="starting-the-ray-cluster">
+<a class="anchor" href="#starting-the-ray-cluster" aria-hidden="true"><span class="octicon octicon-link"></span></a>Starting the Ray Cluster</h2>
+
+<h3 id="on-the-local-machine">
+<a class="anchor" href="#on-the-local-machine" aria-hidden="true"><span class="octicon octicon-link"></span></a>On the local machine</h3>
+
+<p>Start cluster:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># start the cluster (non-blocking)
+ray up cluster.yaml
+
+# forward the cluster dashboard to the local machine (this is a blocking command)
+ray dashboard cluster.yaml
+</code></pre></div></div>
+
+<p>View dashboard: http://localhost:8265</p>
+
+<div class="flash flash-error">
+    <svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg>
+    <strong>Warning: </strong>
+</div>
+
+<p>Connect to cluster and run command for training.
+Note, you can attach but not detach. Thus, better to run this in a screen/tmux session.</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ray attach cluster.yaml
+deepcomp --agent central --train-steps 100000 --env medium --slow-ues 3 --cluster --workers XY
+</code></pre></div></div>
+
+<p>Once training completed, detach/close terminal with Ctrl+D.</p>
+
+<h3 id="monitoring-training-progress">
+<a class="anchor" href="#monitoring-training-progress" aria-hidden="true"><span class="octicon octicon-link"></span></a>Monitoring Training Progress</h3>
+
+<ul>
+  <li>Training updates should be printed inside the attached terminal</li>
+  <li>On the cluster’s head node, <code class="language-plaintext highlighter-rouge">htop</code> should show <code class="language-plaintext highlighter-rouge">ray::RolloutWorker</code> running.</li>
+  <li>On the cluster’s worker nodes, <code class="language-plaintext highlighter-rouge">htop</code> should show <code class="language-plaintext highlighter-rouge">ray::PPO()::train()</code> (or similar) to indicate the training is running.</li>
+  <li>Monitor progress with Tensorboard running <code class="language-plaintext highlighter-rouge">tensorboard --host 0.0.0.0 --logdir results/PPO/</code> on the cluster’s head node. Then access on <code class="language-plaintext highlighter-rouge">&lt;head-node-ip&gt;:6006</code>.</li>
+</ul>
+
+<div class="flash flash-error">
+    <svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg>
+    <strong>Warning: </strong>
+</div>
+
+<h3 id="retrieving-training--testing-results">
+<a class="anchor" href="#retrieving-training--testing-results" aria-hidden="true"><span class="octicon octicon-link"></span></a>Retrieving Training &amp; Testing Results</h3>
+
+<p>From the local laptop, use <code class="language-plaintext highlighter-rouge">ray rsync-down</code> to copy the result files from the cluster’s head node to the local laptop:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># ray rsync-down &lt;cluster-config&gt; &lt;source&gt; &lt;target&gt;
+ray rsync-down cluster.yaml ~/DeepCoMP/results .
+</code></pre></div></div>
+<p>Will be copied to local directory into <code class="language-plaintext highlighter-rouge">results</code>.</p>
+
+<h3 id="terminating-the-cluster">
+<a class="anchor" href="#terminating-the-cluster" aria-hidden="true"><span class="octicon octicon-link"></span></a>Terminating the Cluster</h3>
+
+<p>From the local laptop:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ray down cluster.yaml
+</code></pre></div></div>
+
+<h1 id="what-next">
+<a class="anchor" href="#what-next" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Next?</h1>
+
+<ul>
+  <li><a href="https://docs.ray.io/en/master/cluster/index.html#cluster-index">Ray cluster documentation</a></li>
+  <li><a href="https://github.com/CN-UPB/DeepCoMP">DeepCoMP GitHub repository</a></li>
+</ul>
+
+<h1 id="todos">
+<a class="anchor" href="#todos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Todos:</h1>
+
+<ul>
+  <li>Done: Allow configuring <code class="language-plaintext highlighter-rouge">--cluster</code> and <code class="language-plaintext highlighter-rouge">--result_dir</code> for DeepCoMP CLI</li>
+  <li>Test with multiple nodes on the cluster. Is there a real speedup? Currently, there’s just 1 worker node, so it’s probably comparable to running directly on a single node.
+    <ul>
+      <li>Doesn’t work! Update ray first</li>
+    </ul>
+  </li>
+  <li>Done: Update to latest ray. Fix install with <code class="language-plaintext highlighter-rouge">setup.py</code> and extra rllib</li>
+  <li>Test running on cluster without installing env (and ray?) on workers</li>
+  <li>Some basic tests and proper CI (check example command from readme); update Readme with cluster instructions and link to blog; publish new release</li>
+  <li>Let Ray team know to distribute the blog post: https://discuss.ray.io/t/use-of-ray-logo-in-blog/797</li>
+</ul>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="stefanbschneider/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/rllib-private-cluster" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Things I learned or want to learn.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/stefanbschneider" title="stefanbschneider"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/stefan_schn" title="stefan_schn"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>

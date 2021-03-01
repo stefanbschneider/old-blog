@@ -4,20 +4,20 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Deploying a PyTorch Model Using Django | Stefan’s Blog</title>
+<title>Using PyTorch Inside a Django App | Stefan’s Blog</title>
 <meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="Deploying a PyTorch Model Using Django" />
+<meta property="og:title" content="Using PyTorch Inside a Django App" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Building a simple image classification web app using Django and PyTorch and deploying it on Heroku." />
-<meta property="og:description" content="Building a simple image classification web app using Django and PyTorch and deploying it on Heroku." />
+<meta name="description" content="Building a simple image classification web app using Django and a pretrained PyTorch model." />
+<meta property="og:description" content="Building a simple image classification web app using Django and a pretrained PyTorch model." />
 <link rel="canonical" href="https://stefanbschneider.github.io/blog/pytorch-django" />
 <meta property="og:url" content="https://stefanbschneider.github.io/blog/pytorch-django" />
 <meta property="og:site_name" content="Stefan’s Blog" />
 <meta property="og:image" content="https://stefanbschneider.github.io/blog/images/logos/pytorch.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-12-30T00:00:00-06:00" />
+<meta property="article:published_time" content="2021-02-20T00:00:00-06:00" />
 <script type="application/ld+json">
-{"url":"https://stefanbschneider.github.io/blog/pytorch-django","@type":"BlogPosting","headline":"Deploying a PyTorch Model Using Django","dateModified":"2020-12-30T00:00:00-06:00","datePublished":"2020-12-30T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/pytorch.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/pytorch-django"},"description":"Building a simple image classification web app using Django and PyTorch and deploying it on Heroku.","@context":"https://schema.org"}</script>
+{"url":"https://stefanbschneider.github.io/blog/pytorch-django","@type":"BlogPosting","headline":"Using PyTorch Inside a Django App","dateModified":"2021-02-20T00:00:00-06:00","datePublished":"2021-02-20T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/pytorch.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/pytorch-django"},"description":"Building a simple image classification web app using Django and a pretrained PyTorch model.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://stefanbschneider.github.io/blog/feed.xml" title="Stefan's Blog" /><!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RDWKTYTDBL"></script>
@@ -100,8 +100,8 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Deploying a PyTorch Model Using Django</h1><p class="page-description">Building a simple image classification web app using Django and PyTorch and deploying it on Heroku.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-12-30T00:00:00-06:00" itemprop="datePublished">
-        Dec 30, 2020
+    <h1 class="post-title p-name" itemprop="name headline">Using PyTorch Inside a Django App</h1><p class="page-description">Building a simple image classification web app using Django and a pretrained PyTorch model.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-02-20T00:00:00-06:00" itemprop="datePublished">
+        Feb 20, 2021
       </time>
        • <span class="read-time" title="Estimated read time">
     
@@ -142,19 +142,19 @@ window.onload = wrap_img;
         <div class="pb-5 d-flex flex-wrap flex-justify-end">
           <div class="px-2">
 
-    <a href="https://github.com/stefanbschneider/blog/tree/master/_notebooks/2020-12-30-pytorch-django.ipynb" role="button" target="_blank">
+    <a href="https://github.com/stefanbschneider/blog/tree/master/_notebooks/2021-02-20-pytorch-django.ipynb" role="button" target="_blank">
 <img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
     </a>
 </div>
 
           <div class="px-2">
-    <a href="https://mybinder.org/v2/gh/stefanbschneider/blog/master?filepath=_notebooks%2F2020-12-30-pytorch-django.ipynb" target="_blank">
+    <a href="https://mybinder.org/v2/gh/stefanbschneider/blog/master?filepath=_notebooks%2F2021-02-20-pytorch-django.ipynb" target="_blank">
         <img class="notebook-badge-image" src="/blog/assets/badges/binder.svg" alt="Open In Binder"/>
     </a>
 </div>
 
           <div class="px-2">
-    <a href="https://colab.research.google.com/github/stefanbschneider/blog/blob/master/_notebooks/2020-12-30-pytorch-django.ipynb" target="_blank">
+    <a href="https://colab.research.google.com/github/stefanbschneider/blog/blob/master/_notebooks/2021-02-20-pytorch-django.ipynb" target="_blank">
         <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
     </a>
 </div>
@@ -168,7 +168,7 @@ window.onload = wrap_img;
 #################################################
 ### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
 #################################################
-# file to edit: _notebooks/2020-12-30-pytorch-django.ipynb
+# file to edit: _notebooks/2021-02-20-pytorch-django.ipynb
 -->
 
 <div class="container" id="notebook-container">
