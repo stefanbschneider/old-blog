@@ -1,5 +1,5 @@
 ---
-hide: true
+hide: false
 toc: true
 comments: true
 layout: post
@@ -9,10 +9,8 @@ image: images/logos/ray.png
 categories: [python, ray, rllib, machine learning, reinforcement learning, cluster]
 ---
 
-Documentation:
-* https://docs.ray.io/en/master/cluster/index.html#cluster-index
-* https://docs.ray.io/en/master/cluster/cloud.html#local-on-premise-cluster-list-of-nodes
-* https://discuss.ray.io/t/getting-started-with-rllib-on-a-private-cluster/683
+{% include warning.html text="This guide is still work in progress and currently incomplete! 
+Thanks already to the Ray team (particularly Alex) for [their great support](https://discuss.ray.io/t/getting-started-with-rllib-on-a-private-cluster/683)." %}
 
 In this blog post, I use reinforcement learning (RL) to solve a custom optimization task (here, related to coordination in mobile networks).
 To this end, I use the scalable RL framework [RLlib](https://docs.ray.io/en/master/rllib.html), 
@@ -26,7 +24,7 @@ Then, to speed up training, I execute training on a private/on-premise multi-nod
 While it is simple in principle, it took me a while to go from running RLlib and my custom environment locally to getting it to work on a private cluster.
 I'm hoping this guide is useful for anyone in a similar situation.
 In this blog post, I focus on the general workflow but use my specific environment as an example.
-Details about my RL approach and environment will be covered in a future blog post.
+I will cover details about my RL approach and environment in a future blog post.
 
 
 # Training an RL Agent Locally
@@ -92,9 +90,9 @@ some preparation steps were necessary for me to get RLlib to work on our private
 ### Cluster Configuration
 
 The Ray cluster configuration is saved in a YAML file.
-My configuration file is [here]().
+My configuration file is [here](https://github.com/CN-UPB/DeepCoMP/blob/dev/cluster.yaml).
 
-The most relevant fields concern information about the private cloud:
+The most relevant fields concern information about the private cluster:
 ```yaml
 provider:
     type: local
@@ -108,20 +106,52 @@ The head IP or address points to the head node, i.e., the machine that should co
 To execute commands and train my RL agent, I will later attach to the head node, start training and TensorBoard, and finally retrieve results.
 The workers are other machines in the cluster on which the training is executed.
 
-TODO: auth, num workers
+Depending on the number of workers listed under `worker_ips`, also set `min_workers` and `max_workers` to the same value.
+
+For authentication when logging into the workers and distributing computation across them,
+also configure `auth`:
+```yaml
+auth:
+    ssh_user: stefan
+    # Optional if an ssh private key is necessary to ssh to the cluster.
+    ssh_private_key: ~/.ssh/id_rsa
+```
 
 ### Installation
 
-* Install `ray[rllib]` and the custom environment `deepcomp` on each machine of the cluster. 
-  * TODO: do I really need to install both on all machines? And for each update to the env, update all machines manually? Can't be. Maybe just locally or just head node?
+To run code on the workers, install `ray[rllib]` and the custom environment `deepcomp` on each worker machine of the cluster. 
+
+{% include tip.html text="Maybe this can be avoided, eg, by using Docker images that are pulled automatically?" %}
 
 ### SSH Access  
 
-* Ensure they can access each other via ssh (e.g., by registering the ssh-key in `authorized_keys`)
-* Ensure the `ray` command is available directly after login (active virtualenv)
-* Configure `cluster.yaml` to set the number of worker nodes, include head and worker IPs, and configure SSH access
-* Set `ray.init(address='auto')` inside the code. This now only works with the cluster, not running locally anymore. Thus, better make it configurable.
-* Number of workers: 
+The head node needs `ssh` access to all worker nodes.
+Ensure the head node's public SSH key is registered as authorized key (in `ssh/authorized_keys`) in all worker nodes.
+The head node's private key path should be configured in the `cluster.yaml`.
+
+### `ray` command
+
+The `ray` command needs to be available on all cluster nodes.
+If `ray` is installed in a virtual environment, the easiest option is to automatically source the virtualenv on each login.
+Particularly, adding the following line to `.bashrc` will source the virtualenv:
+```
+source path/to/venv/bin/activate
+```
+Where `path/to/venv` needs to point to the virtualenv. The change is in effect after log out and back in.
+
+Then `ray --version` should run without errors.
+
+### Connect to Ray cluster
+
+To ensure that running `ray` connects to the same cluster and the same Redis DB,
+use `ray.init(address='auto')`.
+Without argument `address='auto'`, execution on the cluster does not work.
+
+However, for me, adding `address='auto'` breaks local execution. 
+Hence, I added an optional CLI argument `--cluster` to my custom `deepcomp` environment, which adds `address='auto'` for running 
+the environment on a cluster without code changes.
+
+
 
 ## Starting the Ray Cluster
 
@@ -138,6 +168,8 @@ ray dashboard cluster.yaml
 
 View dashboard: http://localhost:8265
 
+{% include warning.html text="This currently doesn't work for me. It only shows the head node, not the workers." %}
+
 Connect to cluster and run command for training.
 Note, you can attach but not detach. Thus, better to run this in a screen/tmux session.
 ```
@@ -153,6 +185,9 @@ Once training completed, detach/close terminal with Ctrl+D.
 * On the cluster's head node, `htop` should show `ray::RolloutWorker` running.
 * On the cluster's worker nodes, `htop` should show `ray::PPO()::train()` (or similar) to indicate the training is running.
 * Monitor progress with Tensorboard running `tensorboard --host 0.0.0.0 --logdir results/PPO/` on the cluster's head node. Then access on `<head-node-ip>:6006`.
+
+{% include warning.html text="This currently doesn't work for me. It seems like the program is only running on the head nodes, not at all on the workers." %}
+
 
 ### Retrieving Training & Testing Results
 
