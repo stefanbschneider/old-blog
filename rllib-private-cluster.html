@@ -4,9 +4,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Scaling Deep Reinforcement Learning to Training on a Private Cluster | Stefan’s Blog</title>
+<title>Scaling Deep Reinforcement Learning to a Private Cluster | Stefan’s Blog</title>
 <meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="Scaling Deep Reinforcement Learning to Training on a Private Cluster" />
+<meta property="og:title" content="Scaling Deep Reinforcement Learning to a Private Cluster" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Using Ray RLlib to train a deep reinforcement learning agent (PPO) in a custom environment on a private cluster." />
 <meta property="og:description" content="Using Ray RLlib to train a deep reinforcement learning agent (PPO) in a custom environment on a private cluster." />
@@ -17,7 +17,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-02-15T00:00:00-06:00" />
 <script type="application/ld+json">
-{"url":"https://stefanbschneider.github.io/blog/rllib-private-cluster","@type":"BlogPosting","headline":"Scaling Deep Reinforcement Learning to Training on a Private Cluster","dateModified":"2021-02-15T00:00:00-06:00","datePublished":"2021-02-15T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/ray.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/rllib-private-cluster"},"description":"Using Ray RLlib to train a deep reinforcement learning agent (PPO) in a custom environment on a private cluster.","@context":"https://schema.org"}</script>
+{"url":"https://stefanbschneider.github.io/blog/rllib-private-cluster","@type":"BlogPosting","headline":"Scaling Deep Reinforcement Learning to a Private Cluster","dateModified":"2021-02-15T00:00:00-06:00","datePublished":"2021-02-15T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/ray.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/rllib-private-cluster"},"description":"Using Ray RLlib to train a deep reinforcement learning agent (PPO) in a custom environment on a private cluster.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://stefanbschneider.github.io/blog/feed.xml" title="Stefan's Blog" /><!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-RDWKTYTDBL"></script>
@@ -100,7 +100,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Scaling Deep Reinforcement Learning to Training on a Private Cluster</h1><p class="page-description">Using Ray RLlib to train a deep reinforcement learning agent (PPO) in a custom environment on a private cluster.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-02-15T00:00:00-06:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Scaling Deep Reinforcement Learning to a Private Cluster</h1><p class="page-description">Using Ray RLlib to train a deep reinforcement learning agent (PPO) in a custom environment on a private cluster.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-02-15T00:00:00-06:00" itemprop="datePublished">
         Feb 15, 2021
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -168,9 +168,10 @@ window.onload = wrap_img;
 </li>
 <li class="toc-entry toc-h1"><a href="#what-next">What Next?</a></li>
 <li class="toc-entry toc-h1"><a href="#todos">Todos:</a></li>
-</ul><div class="flash flash-error">
-    <svg class="octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg>
-    <strong>Warning: </strong>
+</ul><div class="Toast Toast--warning googoo">
+   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg></span>
+   <span class="Toast-content">This guide is still work in progress and currently incomplete! 
+Thanks already to the Ray team (particularly Alex) for [their great support](https://discuss.ray.io/t/getting-started-with-rllib-on-a-private-cluster/683).</span>
 </div>
 
 <p>In this blog post, I use reinforcement learning (RL) to solve a custom optimization task (here, related to coordination in mobile networks).
@@ -282,9 +283,9 @@ also configure <code class="language-plaintext highlighter-rouge">auth</code>:</
 
 <p>To run code on the workers, install <code class="language-plaintext highlighter-rouge">ray[rllib]</code> and the custom environment <code class="language-plaintext highlighter-rouge">deepcomp</code> on each worker machine of the cluster.</p>
 
-<div class="flash flash-success">
-    <svg class="octicon octicon-checklist octicon octicon-checklist" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 1.75a.25.25 0 01.25-.25h8.5a.25.25 0 01.25.25v7.736a.75.75 0 101.5 0V1.75A1.75 1.75 0 0011.25 0h-8.5A1.75 1.75 0 001 1.75v11.5c0 .966.784 1.75 1.75 1.75h3.17a.75.75 0 000-1.5H2.75a.25.25 0 01-.25-.25V1.75zM4.75 4a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5zM4 7.75A.75.75 0 014.75 7h2a.75.75 0 010 1.5h-2A.75.75 0 014 7.75zm11.774 3.537a.75.75 0 00-1.048-1.074L10.7 14.145 9.281 12.72a.75.75 0 00-1.062 1.058l1.943 1.95a.75.75 0 001.055.008l4.557-4.45z"></path></svg>
-    <strong>Tip: </strong>
+<div class="Toast Toast--warning googoo">
+   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg></span>
+   <span class="Toast-content">Maybe this can be avoided, eg, by using Docker images that are pulled automatically?</span>
 </div>
 
 <h3 id="ssh-access">
@@ -333,9 +334,9 @@ ray dashboard cluster.yaml
 
 <p>View dashboard: http://localhost:8265</p>
 
-<div class="flash flash-error">
-    <svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg>
-    <strong>Warning: </strong>
+<div class="Toast Toast--warning googoo">
+   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg></span>
+   <span class="Toast-content">This currently doesn't work for me. It only shows the head node, not the workers.</span>
 </div>
 
 <p>Connect to cluster and run command for training.
@@ -356,9 +357,9 @@ deepcomp --agent central --train-steps 100000 --env medium --slow-ues 3 --cluste
   <li>Monitor progress with Tensorboard running <code class="language-plaintext highlighter-rouge">tensorboard --host 0.0.0.0 --logdir results/PPO/</code> on the cluster’s head node. Then access on <code class="language-plaintext highlighter-rouge">&lt;head-node-ip&gt;:6006</code>.</li>
 </ul>
 
-<div class="flash flash-error">
-    <svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg>
-    <strong>Warning: </strong>
+<div class="Toast Toast--warning googoo">
+   <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg></span>
+   <span class="Toast-content">This currently doesn't work for me. It seems like the program is only running on the head nodes, not at all on the workers.</span>
 </div>
 
 <h3 id="retrieving-training--testing-results">
