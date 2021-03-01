@@ -3,13 +3,13 @@ hide: false
 toc: true
 comments: true
 layout: post
-title: Scaling Deep Reinforcement Learning to Training on a Private Cluster
+title: Scaling Deep Reinforcement Learning to a Private Cluster
 description:  Using Ray RLlib to train a deep reinforcement learning agent (PPO) in a custom environment on a private cluster.
 image: images/logos/ray.png
 categories: [python, ray, rllib, machine learning, reinforcement learning, cluster]
 ---
 
-{% include warning.html text="This guide is still work in progress and currently incomplete! 
+{% include alert.html text="This guide is still work in progress and currently incomplete! 
 Thanks already to the Ray team (particularly Alex) for [their great support](https://discuss.ray.io/t/getting-started-with-rllib-on-a-private-cluster/683)." %}
 
 In this blog post, I use reinforcement learning (RL) to solve a custom optimization task (here, related to coordination in mobile networks).
@@ -121,7 +121,7 @@ auth:
 
 To run code on the workers, install `ray[rllib]` and the custom environment `deepcomp` on each worker machine of the cluster. 
 
-{% include tip.html text="Maybe this can be avoided, eg, by using Docker images that are pulled automatically?" %}
+{% include alert.html text="Maybe this can be avoided, eg, by using Docker images that are pulled automatically?" %}
 
 ### SSH Access  
 
@@ -168,7 +168,7 @@ ray dashboard cluster.yaml
 
 View dashboard: http://localhost:8265
 
-{% include warning.html text="This currently doesn't work for me. It only shows the head node, not the workers." %}
+{% include alert.html text="This currently doesn't work for me. It only shows the head node, not the workers." %}
 
 Connect to cluster and run command for training.
 Note, you can attach but not detach. Thus, better to run this in a screen/tmux session.
@@ -186,7 +186,7 @@ Once training completed, detach/close terminal with Ctrl+D.
 * On the cluster's worker nodes, `htop` should show `ray::PPO()::train()` (or similar) to indicate the training is running.
 * Monitor progress with Tensorboard running `tensorboard --host 0.0.0.0 --logdir results/PPO/` on the cluster's head node. Then access on `<head-node-ip>:6006`.
 
-{% include warning.html text="This currently doesn't work for me. It seems like the program is only running on the head nodes, not at all on the workers." %}
+{% include alert.html text="This currently doesn't work for me. It seems like the program is only running on the head nodes, not at all on the workers." %}
 
 
 ### Retrieving Training & Testing Results
