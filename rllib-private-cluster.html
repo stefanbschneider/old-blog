@@ -106,7 +106,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      6 min read
+      7 min read
     
 </span></p>
 
@@ -164,10 +164,14 @@ window.onload = wrap_img;
 <li class="toc-entry toc-h3"><a href="#terminating-the-cluster">Terminating the Cluster</a></li>
 </ul>
 </li>
+<li class="toc-entry toc-h2"><a href="#debugging">Debugging</a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h1"><a href="#what-next">What Next?</a></li>
-<li class="toc-entry toc-h1"><a href="#todos">Todos:</a></li>
+<li class="toc-entry toc-h1"><a href="#what-next">What Next?</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#note-to-self-todos">Note to self: Todos</a></li>
+</ul>
+</li>
 </ul><div class="Toast Toast--warning googoo">
    <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg></span>
    <span class="Toast-content">This guide is still work in progress and currently incomplete! 
@@ -281,7 +285,8 @@ also configure <code class="language-plaintext highlighter-rouge">auth</code>:</
 <h3 id="installation">
 <a class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
 
-<p>To run code on the workers, install <code class="language-plaintext highlighter-rouge">ray[rllib]</code> and the custom environment <code class="language-plaintext highlighter-rouge">deepcomp</code> on each worker machine of the cluster.</p>
+<p>To run code on the workers, install <code class="language-plaintext highlighter-rouge">ray[rllib]</code> and the custom environment <code class="language-plaintext highlighter-rouge">deepcomp</code> on each worker machine of the cluster.
+Also, all nodes in the cluster must have the same Python version (check with <code class="language-plaintext highlighter-rouge">python --version</code> inside the virutalenv).</p>
 
 <div class="Toast Toast--warning googoo">
    <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg></span>
@@ -378,6 +383,14 @@ ray rsync-down cluster.yaml ~/DeepCoMP/results .
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ray down cluster.yaml
 </code></pre></div></div>
 
+<h2 id="debugging">
+<a class="anchor" href="#debugging" aria-hidden="true"><span class="octicon octicon-link"></span></a>Debugging</h2>
+
+<p>If the process above does not work, the logs may contain helpful information for debugging the problem.
+To print the logs, run on the cluster’s head node:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /tmp/ray/session_latest/logs/monitor.*
+</code></pre></div></div>
+
 <h1 id="what-next">
 <a class="anchor" href="#what-next" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Next?</h1>
 
@@ -386,17 +399,11 @@ ray rsync-down cluster.yaml ~/DeepCoMP/results .
   <li><a href="https://github.com/CN-UPB/DeepCoMP">DeepCoMP GitHub repository</a></li>
 </ul>
 
-<h1 id="todos">
-<a class="anchor" href="#todos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Todos:</h1>
+<h2 id="note-to-self-todos">
+<a class="anchor" href="#note-to-self-todos" aria-hidden="true"><span class="octicon octicon-link"></span></a>Note to self: Todos</h2>
 
 <ul>
-  <li>Done: Allow configuring <code class="language-plaintext highlighter-rouge">--cluster</code> and <code class="language-plaintext highlighter-rouge">--result_dir</code> for DeepCoMP CLI</li>
-  <li>Test with multiple nodes on the cluster. Is there a real speedup? Currently, there’s just 1 worker node, so it’s probably comparable to running directly on a single node.
-    <ul>
-      <li>Doesn’t work! Update ray first</li>
-    </ul>
-  </li>
-  <li>Done: Update to latest ray. Fix install with <code class="language-plaintext highlighter-rouge">setup.py</code> and extra rllib</li>
+  <li>Test with multiple nodes on the cluster. Is there a real speedup?</li>
   <li>Test running on cluster without installing env (and ray?) on workers</li>
   <li>Some basic tests and proper CI (check example command from readme); update Readme with cluster instructions and link to blog; publish new release</li>
   <li>Let Ray team know to distribute the blog post: https://discuss.ray.io/t/use-of-ray-logo-in-blog/797</li>
