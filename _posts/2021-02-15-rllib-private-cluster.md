@@ -119,7 +119,8 @@ auth:
 
 ### Installation
 
-To run code on the workers, install `ray[rllib]` and the custom environment `deepcomp` on each worker machine of the cluster. 
+To run code on the workers, install `ray[rllib]` and the custom environment `deepcomp` on each worker machine of the cluster.
+Also, all nodes in the cluster must have the same Python version (check with `python --version` inside the virutalenv).
 
 {% include alert.html text="Maybe this can be avoided, eg, by using Docker images that are pulled automatically?" %}
 
@@ -205,17 +206,23 @@ From the local laptop:
 ray down cluster.yaml
 ```
 
+## Debugging
+
+If the process above does not work, the logs may contain helpful information for debugging the problem.
+To print the logs, run on the cluster's head node:
+```
+cat /tmp/ray/session_latest/logs/monitor.*
+```
+
 # What Next?
 
 * [Ray cluster documentation](https://docs.ray.io/en/master/cluster/index.html#cluster-index)
 * [DeepCoMP GitHub repository](https://github.com/CN-UPB/DeepCoMP)
 
-# Todos:
 
-* Done: Allow configuring `--cluster` and `--result_dir` for DeepCoMP CLI
-* Test with multiple nodes on the cluster. Is there a real speedup? Currently, there's just 1 worker node, so it's probably comparable to running directly on a single node.
-    * Doesn't work! Update ray first
-* Done: Update to latest ray. Fix install with `setup.py` and extra rllib
+## Note to self: Todos
+
+* Test with multiple nodes on the cluster. Is there a real speedup? 
 * Test running on cluster without installing env (and ray?) on workers
 * Some basic tests and proper CI (check example command from readme); update Readme with cluster instructions and link to blog; publish new release
 * Let Ray team know to distribute the blog post: https://discuss.ray.io/t/use-of-ray-logo-in-blog/797
