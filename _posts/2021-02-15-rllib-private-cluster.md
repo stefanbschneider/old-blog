@@ -53,7 +53,8 @@ tmux session makes sense.
 deepcomp --agent central --train-steps 100000 --env medium --slow-ues 3
 ```
 
-This trains a centralized PPO agent for 100k training steps. 
+This trains a centralized PPO agent for 100k training steps running on a single core. 
+To use more cores, set the corresponding value via CLI argument `--workers`.
 The additional arguments `--env` and `--slow-ues` configure my custom DeepCoMP environment (more about that in another blog post).
 During training, updates should be printed on screen and progress can be monitored with TensorBoard.
 To start TensorBoard, run (in a separate terminal):
@@ -113,7 +114,8 @@ also configure `auth`:
 ```yaml
 auth:
     ssh_user: stefan
-    # Optional if an ssh private key is necessary to ssh to the cluster.
+    # Optional if an ssh private key is necessary to ssh to the cluster
+    # This is the SSH key of the local laptop, not of the head node
     ssh_private_key: ~/.ssh/id_rsa
 ```
 
@@ -130,9 +132,13 @@ The head node needs `ssh` access to all worker nodes.
 Ensure the head node's public SSH key is registered as authorized key (in `ssh/authorized_keys`) in all worker nodes.
 The head node's private key path should be configured in the `cluster.yaml`.
 
+{% include info.html text="In fact, the private key configured in `cluster.yaml` is the private key of the local laptop that controls the cluster. Not the head node." %}
+
 ### `ray` command
 
 The `ray` command needs to be available on all cluster nodes.
+If the `ray` command is not available on the cluster, trying to start the cluster will crash with the error `Command 'ray' not found ... Failed to setup head node.`.
+
 If `ray` is installed in a virtual environment, the easiest option is to automatically source the virtualenv on each login.
 Particularly, adding the following line to `.bashrc` will source the virtualenv:
 ```
@@ -213,6 +219,13 @@ To print the logs, run on the cluster's head node:
 ```
 cat /tmp/ray/session_latest/logs/monitor.*
 ```
+
+### Common Errors
+
+* `Command 'ray' not found` when trying to start the cluster
+    * The `ray` command is not available on the head node after SSH. One solution is to source the virtualenv with `ray` in the `.bashrc` or to install `ray` system-wide.
+* Repeatedly `autoscaler +4m36s) Adding 1 nodes of type ray-legacy-head-node-type.` when training on the cluster
+    * ??
 
 # What Next?
 
