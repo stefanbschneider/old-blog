@@ -164,7 +164,11 @@ window.onload = wrap_img;
 <li class="toc-entry toc-h3"><a href="#terminating-the-cluster">Terminating the Cluster</a></li>
 </ul>
 </li>
-<li class="toc-entry toc-h2"><a href="#debugging">Debugging</a></li>
+<li class="toc-entry toc-h2"><a href="#debugging">Debugging</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#common-errors">Common Errors</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-entry toc-h1"><a href="#what-next">What Next?</a>
@@ -218,7 +222,8 @@ tmux session makes sense.</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>deepcomp --agent central --train-steps 100000 --env medium --slow-ues 3
 </code></pre></div></div>
 
-<p>This trains a centralized PPO agent for 100k training steps. 
+<p>This trains a centralized PPO agent for 100k training steps running on a single core. 
+To use more cores, set the corresponding value via CLI argument <code class="language-plaintext highlighter-rouge">--workers</code>.
 The additional arguments <code class="language-plaintext highlighter-rouge">--env</code> and <code class="language-plaintext highlighter-rouge">--slow-ues</code> configure my custom DeepCoMP environment (more about that in another blog post).
 During training, updates should be printed on screen and progress can be monitored with TensorBoard.
 To start TensorBoard, run (in a separate terminal):</p>
@@ -278,7 +283,8 @@ The workers are other machines in the cluster on which the training is executed.
 also configure <code class="language-plaintext highlighter-rouge">auth</code>:</p>
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">auth</span><span class="pi">:</span>
     <span class="na">ssh_user</span><span class="pi">:</span> <span class="s">stefan</span>
-    <span class="c1"># Optional if an ssh private key is necessary to ssh to the cluster.</span>
+    <span class="c1"># Optional if an ssh private key is necessary to ssh to the cluster</span>
+    <span class="c1"># This is the SSH key of the local laptop, not of the head node</span>
     <span class="na">ssh_private_key</span><span class="pi">:</span> <span class="s">~/.ssh/id_rsa</span>
 </code></pre></div></div>
 
@@ -300,11 +306,18 @@ Also, all nodes in the cluster must have the same Python version (check with <co
 Ensure the head node’s public SSH key is registered as authorized key (in <code class="language-plaintext highlighter-rouge">ssh/authorized_keys</code>) in all worker nodes.
 The head node’s private key path should be configured in the <code class="language-plaintext highlighter-rouge">cluster.yaml</code>.</p>
 
+<div class="Toast">
+   <span class="Toast-icon"><svg class="octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg></span>
+   <span class="Toast-content">In fact, the private key configured in `cluster.yaml` is the private key of the local laptop that controls the cluster. Not the head node.</span>
+</div>
+
 <h3 id="ray-command">
 <a class="anchor" href="#ray-command" aria-hidden="true"><span class="octicon octicon-link"></span></a><code class="language-plaintext highlighter-rouge">ray</code> command</h3>
 
 <p>The <code class="language-plaintext highlighter-rouge">ray</code> command needs to be available on all cluster nodes.
-If <code class="language-plaintext highlighter-rouge">ray</code> is installed in a virtual environment, the easiest option is to automatically source the virtualenv on each login.
+If the <code class="language-plaintext highlighter-rouge">ray</code> command is not available on the cluster, trying to start the cluster will crash with the error <code class="language-plaintext highlighter-rouge">Command 'ray' not found ... Failed to setup head node.</code>.</p>
+
+<p>If <code class="language-plaintext highlighter-rouge">ray</code> is installed in a virtual environment, the easiest option is to automatically source the virtualenv on each login.
 Particularly, adding the following line to <code class="language-plaintext highlighter-rouge">.bashrc</code> will source the virtualenv:</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source path/to/venv/bin/activate
 </code></pre></div></div>
@@ -390,6 +403,23 @@ ray rsync-down cluster.yaml ~/DeepCoMP/results .
 To print the logs, run on the cluster’s head node:</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /tmp/ray/session_latest/logs/monitor.*
 </code></pre></div></div>
+
+<h3 id="common-errors">
+<a class="anchor" href="#common-errors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Common Errors</h3>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">Command 'ray' not found</code> when trying to start the cluster
+    <ul>
+      <li>The <code class="language-plaintext highlighter-rouge">ray</code> command is not available on the head node after SSH. One solution is to source the virtualenv with <code class="language-plaintext highlighter-rouge">ray</code> in the <code class="language-plaintext highlighter-rouge">.bashrc</code> or to install <code class="language-plaintext highlighter-rouge">ray</code> system-wide.</li>
+    </ul>
+  </li>
+  <li>Repeatedly <code class="language-plaintext highlighter-rouge">autoscaler +4m36s) Adding 1 nodes of type ray-legacy-head-node-type.</code> when training on the cluster
+    <ul>
+      <li>??</li>
+    </ul>
+  </li>
+</ul>
 
 <h1 id="what-next">
 <a class="anchor" href="#what-next" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Next?</h1>
