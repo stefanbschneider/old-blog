@@ -122,7 +122,7 @@ auth:
 ### Installation
 
 To run code on the workers, install `ray[rllib]` and the custom environment `deepcomp` on each worker machine of the cluster.
-Also, all nodes in the cluster must have the same Python version (check with `python --version` inside the virutalenv).
+All nodes in the cluster must have the same Python and same `ray` version (check with `--version` inside the virutalenv).
 
 {% include alert.html text="Maybe this can be avoided, eg, by using Docker images that are pulled automatically?" %}
 
@@ -220,12 +220,27 @@ To print the logs, run on the cluster's head node:
 cat /tmp/ray/session_latest/logs/monitor.*
 ```
 
+To print a status overview of the cluster:
+```
+ ray status --address <address:port>
+```
+Where `<address:port>` belongs to the cluster and is displayed when starting it with `ray up cluster.yaml` (after `To connect to this Ray runtime from another node, run ...`).
+
+
 ### Common Errors
 
 * `Command 'ray' not found` when trying to start the cluster
     * The `ray` command is not available on the head node after SSH. One solution is to source the virtualenv with `ray` in the `.bashrc` or to install `ray` system-wide.
 * Repeatedly `autoscaler +4m36s) Adding 1 nodes of type ray-legacy-head-node-type.` when training on the cluster
     * ??
+* When trying to run code on the cluster after `ray attach cluster.yaml`: `(raylet) OSError: [Errno 98] Address already in use`
+    * ?? Is the redis server already running; something wrong with the cluster ?? 
+    * Stopping and restarting the cluster seems to fix the problem: Detach, then from the laptop stop the cluster: `ray down cluster.yaml`, then start it again `ray up cluster.yaml`
+* All load seems to be just on the cluster head and nothing is distributed to the workers (when observing with `htop`)
+    * ??
+* In the logs:
+    * `ERROR monitor.py:264 -- Monitor: Cleanup exception. Trying again...`
+    * `1 random worker nodes will not be shut down. (due to --keep-min-workers)`
 
 # What Next?
 
@@ -239,3 +254,7 @@ cat /tmp/ray/session_latest/logs/monitor.*
 * Test running on cluster without installing env (and ray?) on workers
 * Some basic tests and proper CI (check example command from readme); update Readme with cluster instructions and link to blog; publish new release
 * Let Ray team know to distribute the blog post: https://discuss.ray.io/t/use-of-ray-logo-in-blog/797
+* Measure time to complete training when training on 1 core; 20 cores on 1 machine; 20 cores each on multiple machines
+  * 15min on 1 core
+  * 5 min on 20 core
+  * 4 min on 40 core
