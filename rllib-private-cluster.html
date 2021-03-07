@@ -106,7 +106,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      7 min read
+      8 min read
     
 </span></p>
 
@@ -292,7 +292,7 @@ also configure <code class="language-plaintext highlighter-rouge">auth</code>:</
 <a class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h3>
 
 <p>To run code on the workers, install <code class="language-plaintext highlighter-rouge">ray[rllib]</code> and the custom environment <code class="language-plaintext highlighter-rouge">deepcomp</code> on each worker machine of the cluster.
-Also, all nodes in the cluster must have the same Python version (check with <code class="language-plaintext highlighter-rouge">python --version</code> inside the virutalenv).</p>
+All nodes in the cluster must have the same Python and same <code class="language-plaintext highlighter-rouge">ray</code> version (check with <code class="language-plaintext highlighter-rouge">--version</code> inside the virutalenv).</p>
 
 <div class="Toast Toast--warning googoo">
    <span class="Toast-icon"><svg class="octicon octicon-alert octicon octicon-alert octicon octicon-alert" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8.22 1.754a.25.25 0 00-.44 0L1.698 13.132a.25.25 0 00.22.368h12.164a.25.25 0 00.22-.368L8.22 1.754zm-1.763-.707c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0114.082 15H1.918a1.75 1.75 0 01-1.543-2.575L6.457 1.047zM9 11a1 1 0 11-2 0 1 1 0 012 0zm-.25-5.25a.75.75 0 00-1.5 0v2.5a.75.75 0 001.5 0v-2.5z"></path></svg></span>
@@ -404,6 +404,11 @@ To print the logs, run on the cluster’s head node:</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat /tmp/ray/session_latest/logs/monitor.*
 </code></pre></div></div>
 
+<p>To print a status overview of the cluster:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> ray status --address &lt;address:port&gt;
+</code></pre></div></div>
+<p>Where <code class="language-plaintext highlighter-rouge">&lt;address:port&gt;</code> belongs to the cluster and is displayed when starting it with <code class="language-plaintext highlighter-rouge">ray up cluster.yaml</code> (after <code class="language-plaintext highlighter-rouge">To connect to this Ray runtime from another node, run ...</code>).</p>
+
 <h3 id="common-errors">
 <a class="anchor" href="#common-errors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Common Errors</h3>
 
@@ -417,6 +422,24 @@ To print the logs, run on the cluster’s head node:</p>
   <li>Repeatedly <code class="language-plaintext highlighter-rouge">autoscaler +4m36s) Adding 1 nodes of type ray-legacy-head-node-type.</code> when training on the cluster
     <ul>
       <li>??</li>
+    </ul>
+  </li>
+  <li>When trying to run code on the cluster after <code class="language-plaintext highlighter-rouge">ray attach cluster.yaml</code>: <code class="language-plaintext highlighter-rouge">(raylet) OSError: [Errno 98] Address already in use</code>
+    <ul>
+      <li>?? Is the redis server already running; something wrong with the cluster ??</li>
+      <li>Stopping and restarting the cluster seems to fix the problem: Detach, then from the laptop stop the cluster: <code class="language-plaintext highlighter-rouge">ray down cluster.yaml</code>, then start it again <code class="language-plaintext highlighter-rouge">ray up cluster.yaml</code>
+</li>
+    </ul>
+  </li>
+  <li>All load seems to be just on the cluster head and nothing is distributed to the workers (when observing with <code class="language-plaintext highlighter-rouge">htop</code>)
+    <ul>
+      <li>??</li>
+    </ul>
+  </li>
+  <li>In the logs:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">ERROR monitor.py:264 -- Monitor: Cleanup exception. Trying again...</code></li>
+      <li><code class="language-plaintext highlighter-rouge">1 random worker nodes will not be shut down. (due to --keep-min-workers)</code></li>
     </ul>
   </li>
 </ul>
@@ -437,6 +460,13 @@ To print the logs, run on the cluster’s head node:</p>
   <li>Test running on cluster without installing env (and ray?) on workers</li>
   <li>Some basic tests and proper CI (check example command from readme); update Readme with cluster instructions and link to blog; publish new release</li>
   <li>Let Ray team know to distribute the blog post: https://discuss.ray.io/t/use-of-ray-logo-in-blog/797</li>
+  <li>Measure time to complete training when training on 1 core; 20 cores on 1 machine; 20 cores each on multiple machines
+    <ul>
+      <li>15min on 1 core</li>
+      <li>5 min on 20 core</li>
+      <li>4 min on 40 core</li>
+    </ul>
+  </li>
 </ul>
 
   </div><!-- from https://github.com/utterance/utterances -->
