@@ -166,6 +166,7 @@ window.onload = wrap_img;
 
   <div class="post-content e-content" itemprop="articleBody">
     <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Initial-Setup:-Install-Django-and-PyTorch">Initial Setup: Install Django and PyTorch </a></li>
 <li class="toc-entry toc-h2"><a href="#PyTorch-Image-Classification">PyTorch Image Classification </a></li>
 <li class="toc-entry toc-h2"><a href="#Django-URL-setup">Django URL setup </a></li>
 <li class="toc-entry toc-h2"><a href="#Django-Image-Upload,-Classification,-and-Display">Django Image Upload, Classification, and Display </a>
@@ -214,10 +215,13 @@ For more information on differences between Django and Flask, see <a href="https
     <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg>
     <strong>Note: </strong>My deployed app may take several seconds to load because I use Heroku’s fee dynos, which automatically power off when they are unused.
 </div>
-## Initial Setup: Install Django and PyTorch</li>
+</li>
 </ul>
 </li>
 </ul>
+<h2 id="Initial-Setup:-Install-Django-and-PyTorch">
+<a class="anchor" href="#Initial-Setup:-Install-Django-and-PyTorch" aria-hidden="true"><span class="octicon octicon-link"></span></a>Initial Setup: Install Django and PyTorch<a class="anchor-link" href="#Initial-Setup:-Install-Django-and-PyTorch"> </a>
+</h2>
 <p>Requirements: Python 3, GitHub and Heroku account.
 Install Django and PyTorch:</p>
 
@@ -245,10 +249,10 @@ inside the Django <code>image_classification/views.py</code> module.
     <svg class="octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info octicon octicon-info" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path></svg>
     <strong>Note: </strong>This code is taken from a <a href="https://pytorch.org/tutorials/intermediate/flask_rest_api_tutorial.html">PyTorch tutorial</a> and is under MIT license.
 </div>
-First, I load the pretrained DenseNet, switch to evaluation/inference mode (since I do not need any further training),
+<p>First, I load the pretrained DenseNet, switch to evaluation/inference mode (since I do not need any further training),
 and load the mapping for predicted indices to human-readable labels for ImageNet.
 The JSON-file containing the mapping is available <a href="https://s3.amazonaws.com/deep-learning-models/image-models/imagenet_class_index.json">here</a>
-and should be saved in the Django <code>static</code> directory under as defined in <code>STATICFILES_DIRS</code> (<code>settings.py</code>).
+and should be saved in the Django <code>static</code> directory under as defined in <code>STATICFILES_DIRS</code> (<code>settings.py</code>).</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -278,9 +282,9 @@ and should be saved in the Django <code>static</code> directory under as defined
     <svg class="octicon octicon-checklist octicon octicon-checklist" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 1.75a.25.25 0 01.25-.25h8.5a.25.25 0 01.25.25v7.736a.75.75 0 101.5 0V1.75A1.75 1.75 0 0011.25 0h-8.5A1.75 1.75 0 001 1.75v11.5c0 .966.784 1.75 1.75 1.75h3.17a.75.75 0 000-1.5H2.75a.25.25 0 01-.25-.25V1.75zM4.75 4a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5zM4 7.75A.75.75 0 014.75 7h2a.75.75 0 010 1.5h-2A.75.75 0 014 7.75zm11.774 3.537a.75.75 0 00-1.048-1.074L10.7 14.145 9.281 12.72a.75.75 0 00-1.062 1.058l1.943 1.95a.75.75 0 001.055.008l4.557-4.45z"></path></svg>
     <strong>Tip: </strong>Loading the static JSON file via <code>settings.STATIC_ROOT</code> should work both in development and production deployment but requires running <code>python manage.py collectstatic</code> first.
 </div>
-Then, I need a function to transform an uploaded image (passed in bytes) into the required format for DenseNet,
+<p>Then, I need a function to transform an uploaded image (passed in bytes) into the required format for DenseNet,
 which is a 224 x 224 image with 3 RGB channels. The following code does this transformation and also normalizes the
-image, returning the corresponding tensor:
+image, returning the corresponding tensor:</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">transform_image</span><span class="p">(</span><span class="n">image_bytes</span><span class="p">):</span>
     <span class="sd">"""</span>
 <span class="sd">    Transform image into required DenseNet format: 224x224 with 3 RGB channels and normalized.</span>
@@ -399,7 +403,6 @@ and create an image URI for displaying the image in the template later (see <a h
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">render</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">'image_classification/index.html'</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
 </pre></div>
-<p>Final <code>views.py</code>.</p>
 
 </div>
 </div>
@@ -444,10 +447,9 @@ predicted label.</p>
 {% endif %}
 </pre></div>
 <p></p>
-<p>Final <code>index.html</code>.</p>
 <p>The uploaded image uses the saved and passed image URI from before and does not save or load any image from disk,
 which is important for privacy.</p>
-<p>This template relies on some Bootstrap styling (see <a href="https://stefanbschneider.github.io/blog/django-bootstrap">my corresponding Blog post</a>),
+<p>This template relies on some Bootstrap styling (see <a href="https://stefanbschneider.github.io/blog/django-bootstrap">my corresponding blog post</a>),
 but it is of course possible to omit that.</p>
 <h3 id="Testing-the-App-Locally">
 <a class="anchor" href="#Testing-the-App-Locally" aria-hidden="true"><span class="octicon octicon-link"></span></a>Testing the App Locally<a class="anchor-link" href="#Testing-the-App-Locally"> </a>
@@ -560,7 +562,13 @@ Heroku executes it on each deploy automatically.</p>
 After successful deployment, access the app at its URL.
 Mine is at <a href="https://pytorch-django.herokuapp.com/">https://pytorch-django.herokuapp.com/</a>.
 It works quite well:</p>
-<p><img src="/blog/images/copied_from_nb/pytorch-django/demo.gif" alt=""></p>
+<p><figure>
+  
+    <img class="docimage" src="/blog/images/copied_from_nb/pytorch-django/demo.gif" alt="image classification demo" style="max-width: 40%px">
+    
+    
+</figure>
+</p>
 <h2 id="What-Next?">
 <a class="anchor" href="#What-Next?" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Next?<a class="anchor-link" href="#What-Next?"> </a>
 </h2>
