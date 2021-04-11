@@ -201,6 +201,13 @@ window.onload = wrap_img;
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>In this blog post, I build a simple image classification app using a pre-trained <a href="https://pytorch.org/hub/pytorch_vision_densenet/">DenseNet 121 model in PyTorch</a>.
 I deploy this image classification model inside a Django web app on Heroku.</p>
+<p><figure>
+  
+    <img class="docimage" src="/blog/images/copied_from_nb/pytorch-django/demo.gif" alt="image classification demo" style="max-width: 40%px">
+    
+    
+</figure>
+</p>
 <p>This is very much related to the <a href="https://pytorch.org/tutorials/intermediate/flask_rest_api_tutorial.html">PyTorch guide on deployment with Flask</a>.
 Here, I show an alternative using Django, which is not as light-weight but contains more features built-in than Flask.
 For more information on differences between Django and Flask, see <a href="https://hackr.io/blog/flask-vs-django">this website</a>.</p>
@@ -556,15 +563,7 @@ Heroku executes it on each deploy automatically.</p>
 </h3>
 <p>Check the Heroku activity/logs to see if the build and deployment are successful.
 After successful deployment, access the app at its URL.
-Mine is at <a href="https://pytorch-django.herokuapp.com/">https://pytorch-django.herokuapp.com/</a>.
-It works quite well:</p>
-<p><figure>
-  
-    <img class="docimage" src="/blog/images/copied_from_nb/pytorch-django/demo.gif" alt="image classification demo" style="max-width: 40%px">
-    
-    
-</figure>
-</p>
+Mine is at <a href="https://pytorch-django.herokuapp.com/">https://pytorch-django.herokuapp.com/</a>.</p>
 <h2 id="What-Next?">
 <a class="anchor" href="#What-Next?" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Next?<a class="anchor-link" href="#What-Next?"> </a>
 </h2>
