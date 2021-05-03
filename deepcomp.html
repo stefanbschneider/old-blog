@@ -176,17 +176,11 @@ I also outline how I solved the cell selection problem with modern self-learning
 
 <p>The whole blog post is meant for people who are interested but do not have a scientific background or 
 extensive knowledge in the area.
-People who are used to reading scientific papers, can find a lot more details in the preprint of my paper.</p>
+The corresponding research paper is still work in progress. 
+I will post a preprint later, which contains a lot more details than this blog post.</p>
 
 <p>Either way, if something is unclear, or you have open questions, feel free to ask them in the comment section below.
 For that, you need a (free) GitHub account. Alternatively, you can also contact me directly via Twitter or email.</p>
-
-<div class="flash flash-success">
-    <svg class="octicon octicon-checklist octicon octicon-checklist octicon octicon-checklist" viewbox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M2.5 1.75a.25.25 0 01.25-.25h8.5a.25.25 0 01.25.25v7.736a.75.75 0 101.5 0V1.75A1.75 1.75 0 0011.25 0h-8.5A1.75 1.75 0 001 1.75v11.5c0 .966.784 1.75 1.75 1.75h3.17a.75.75 0 000-1.5H2.75a.25.25 0 01-.25-.25V1.75zM4.75 4a.75.75 0 000 1.5h4.5a.75.75 0 000-1.5h-4.5zM4 7.75A.75.75 0 014.75 7h2a.75.75 0 010 1.5h-2A.75.75 0 014 7.75zm11.774 3.537a.75.75 0 00-1.048-1.074L10.7 14.145 9.281 12.72a.75.75 0 00-1.062 1.058l1.943 1.95a.75.75 0 001.055.008l4.557-4.45z"></path></svg>
-    <strong>Tip: </strong>
-</div>
-
-<p>TODO: paper preprint</p>
 
 <h1 id="what-is-multi-cell-selection-and-why-is-it-important">
 <a class="anchor" href="#what-is-multi-cell-selection-and-why-is-it-important" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is (multi-)cell selection and why is it important?</h1>
@@ -246,10 +240,7 @@ The main idea is that these approaches do not follow a hand-written algorithm or
 but learn themselves how to optimize service quality by testing different actions and receiving rewards for good service quality.
 In doing so, these approaches learn themselves how to optimize multi-cell selection and adapt to any given scenario.
 I propose three approaches: A centralized approach, called DeepCoMP and two distributed approaches, called DD-CoMP and D3-CoMP.
-To implement each of these approaches, I defined a corresponding Markov decision process, which is described in the preprint.
 The implemented prototypes (in Python) are publicly available on <a href="https://github.com/CN-UPB/DeepCoMP">GitHub</a>.</p>
-
-<p>TODO: link preprint</p>
 
 <h2 id="centralized-cell-selection-with-deepcomp">
 <a class="anchor" href="#centralized-cell-selection-with-deepcomp" aria-hidden="true"><span class="octicon octicon-link"></span></a>Centralized cell selection with DeepCoMP</h2>
@@ -296,9 +287,7 @@ It connects users to multiple cells with CoMP where it is useful but not overly 
 
 <p><img src="/blog/images/deepcomp/central-trained.gif" alt="" title="With training, DeepCoMP learns to select suitable cells for all users."></p>
 
-<p>Further details and systematic evaluation results are in the paper.</p>
-
-<p>TODO: link paper</p>
+<p>Further details and systematic evaluation results are in the paper, which I will post later.</p>
 
 <h1 id="what-next">
 <a class="anchor" href="#what-next" aria-hidden="true"><span class="octicon octicon-link"></span></a>What next?</h1>
@@ -310,7 +299,7 @@ things like sending power.</p>
 <p>If you are interested, you can find more information here:</p>
 
 <ul>
-  <li>Paper Preprint</li>
+  <li>Paper Preprint (will be uploaded soon)</li>
   <li><a href="https://github.com/CN-UPB/DeepCoMP">Code on GitHub</a></li>
   <li><a href="https://www.anyscale.com/ray-summit-2021?agenda=deepcomp-multi-agent-reinforcement-learning-for-multi-cell-selection-in-5g">My talk at Ray Summit 2021</a></li>
   <li><a href="https://stefanbschneider.github.io/blog/categories/#understandable%20research">Other blog posts on understandable research</a></li>
