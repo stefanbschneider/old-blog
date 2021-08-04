@@ -3,7 +3,7 @@ toc: true
 comments: true
 layout: post
 title: Using Bootstrap to Style a Django App
-description:  Using the crispy tag and Bootstrap for nicer styling of Django apps.
+description:  Using the crispy tag and Bootstrap 5 for nicer styling of Django apps.
 image: images/logos/bootstrap.png
 categories: [python, django, bootstrap]
 ---
@@ -181,7 +181,7 @@ which is particularly useful when having many large forms inside a Django app.
 * [Django "Hello World" GitHub Repository](https://github.com/stefanbschneider/django-hello-world)
 * [Deployed "Hello World" App on Heroku](https://django-hello-world-app.herokuapp.com/)
 
-Small example apps I built with Django and deployed on Heroku, using persistent storage:
+Small example apps I built with Django and deployed on Heroku, using Bootstrap:
 
 * Quotify: An example app showing inspirational quotes. [[Code](https://github.com/stefanbschneider/quotify)] [[App](https://django-quotify.herokuapp.com/)]
 * Ideally: Organize & Grow Your Ideas. [[Code](https://github.com/stefanbschneider/ideally)] [[App](https://ideally-app.herokuapp.com/)]
@@ -189,6 +189,7 @@ Small example apps I built with Django and deployed on Heroku, using persistent 
 
 Other blog posts:
 
-* [Related post: Building a Django App and Deploying It on Heroku](https://stefanbschneider.github.io/blog/django-heroku)
-* [Previous post: Adding a Database to a Django App](https://stefanbschneider.github.io/blog/django-db)
+* [Adding Google Analytics to a Django App](https://stefanbschneider.github.io/blog/django-google-analytics)
+* [Building a Django App and Deploying It on Heroku](https://stefanbschneider.github.io/blog/django-heroku)
+* [Adding a Database to a Django App](https://stefanbschneider.github.io/blog/django-db)
 * [Other blog posts related to Django](https://stefanbschneider.github.io/blog/categories/#django)
