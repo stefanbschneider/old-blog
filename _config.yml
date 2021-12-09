@@ -68,7 +68,7 @@ comments: true
 
 # Add your Google Analytics ID here if you have one and want to use it
 # tag set directly in google-analytics.html
-google_analytics: true
+google_analytics: G-RDWKTYTDBL
 
 exclude:
   - docker-compose.yml
