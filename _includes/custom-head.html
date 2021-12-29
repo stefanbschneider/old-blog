@@ -5,8 +5,19 @@
   2. Customize default _includes/custom-head.html in your source directory and insert the given code snippet.
 {% endcomment %}
 
+
 <!--for cookie banner (from websitepolicies.com)-->
-<link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/><script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script><script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script>
+<!--<link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/>-->
+<!--<script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>-->
+<!--<script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script>-->
+
+<!--with non-blocking loading: https://web.dev/render-blocking-resources/?utm_source=lighthouse&utm_medium=lr-->
+<link rel="preload" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"></noscript>
+<!--use defer rather than async to keep order of script exec: https://stackoverflow.com/a/39711009/2745116-->
+<script defer src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>
+<script defer>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script>
+
 
 {%- include favicons.html -%}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
