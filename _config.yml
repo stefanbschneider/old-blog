@@ -48,7 +48,8 @@ minima:
     github: stefanbschneider
 
 # Set this to true to get LaTeX math equation support
-use_math: true
+# custom: or just set use_math: true in the front matter of specific posts
+use_math: false
 
 # Set this to true to display the summary of your blog post under your title on the Home page.
 show_description: true
