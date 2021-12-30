@@ -141,12 +141,18 @@ window.onload = wrap_img;
 </ul><p><a href="https://www.djangoproject.com/">Django</a> allows building simple (and complex) web apps quickly, using <a href="https://docs.djangoproject.com/en/3.1/ref/templates/">Django Templates</a> for rendering.
 By default, forms, buttons, and other elements are not styled and look quite ugly:</p>
 
-<p><img src="/blog/images/django-bootstrap/form-ugly.png" alt="Django form without Bootstrap" title="Django form without styling."></p>
+<figure>
+    <img src="/blog/images/django-bootstrap/form-ugly.png" width="528" height="61" alt="Django form without Bootstrap.">
+    <figcaption>Django form without styling.</figcaption>
+</figure>
 
 <p>Using <a href="https://getbootstrap.com/">Bootstrap</a> and <a href="https://django-crispy-forms.readthedocs.io/en/latest/index.html"><code class="language-plaintext highlighter-rouge">django-crispy-forms</code></a>,
 the rendered templates can easily be improved to look much nicer, without having to adjust styling manually. For example:</p>
 
-<p><img src="/blog/images/django-bootstrap/form-crispy.png" alt="Django form with Bootstrap" title="Django form styled with Bootstrap."></p>
+<figure>
+    <img src="/blog/images/django-bootstrap/form-crispy.png" width="524" height="346" alt="Django form styled with Bootstrap.">
+    <figcaption>Django form styled with Bootstrap.</figcaption>
+</figure>
 
 <p>As an example, I extend my <a href="https://github.com/stefanbschneider/django-hello-world">Django “Hello World” App</a>
 (described in a <a href="https://stefanbschneider.github.io/blog/django-heroku">previous post</a>)
@@ -246,7 +252,9 @@ Bootstrap form.</p>
 
 <p>Now, when running the development server, the app shows the new form:</p>
 
-<p><img src="/blog/images/django-bootstrap/form-ugly.png" alt="Django form with Bootstrap"></p>
+<figure>
+    <img src="/blog/images/django-bootstrap/form-ugly.png" width="528" height="61" alt="Django form without Bootstrap.">
+</figure>
 
 <p>The “Hello World” message should display the entered username and date as well as the total click count.
 However, the form does not yet use Bootstrap and is still quite ugly!</p>
@@ -291,7 +299,9 @@ All it takes, is loading <code class="language-plaintext highlighter-rouge">cris
 
 <p>Now, the Django app should be rendered with Bootstrap and already look much nicer:</p>
 
-<p><img src="/blog/images/django-bootstrap/form-crispy.png" alt="Django form with Bootstrap"></p>
+<figure>
+    <img src="/blog/images/django-bootstrap/form-crispy.png" width="524" height="346" alt="Django form styled with Bootstrap.">
+</figure>
 
 <p>The nice thing is that <code class="language-plaintext highlighter-rouge">crispy</code> will handle all the overhead of styling each form field with bootstrap,
 which is particularly useful when having many large forms inside a Django app.</p>
