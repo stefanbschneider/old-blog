@@ -17,7 +17,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-01-29T00:00:00-06:00" />
 <script type="application/ld+json">
-{"url":"https://stefanbschneider.github.io/blog/django-db","@type":"BlogPosting","headline":"Adding a Database to a Django App","dateModified":"2021-01-29T00:00:00-06:00","datePublished":"2021-01-29T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/PostgreSQL.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/django-db"},"description":"Persistent storage using a SQL-based database for Django (development and deployment on Heroku).","@context":"https://schema.org"}</script>
+{"dateModified":"2021-01-29T00:00:00-06:00","datePublished":"2021-01-29T00:00:00-06:00","url":"https://stefanbschneider.github.io/blog/django-db","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/django-db"},"headline":"Adding a Database to a Django App","image":"https://stefanbschneider.github.io/blog/images/logos/PostgreSQL.png","description":"Persistent storage using a SQL-based database for Django (development and deployment on Heroku).","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://stefanbschneider.github.io/blog/feed.xml" title="Stefan's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
 
@@ -273,7 +273,12 @@ To enable persistent storage for my “Hello World” app deployed on Heroku, I 
 This database is automatically created when <a href="https://stefanbschneider.github.io/blog/django-heroku">initially setting up the Django app on Heroku</a>.
 The available databases on Heroku are listed in the <a href="https://data.heroku.com/">Heroku data dashboard</a>.</p>
 
-<p><img src="/blog/images/django-db/heroku-db.png" alt="Screenshot of Heroku dashboard" title="Screenshot of the Heroku Data dashboard."></p>
+<p>[//]: # (![Screenshot of Heroku dashboard](/blog/images/django-db/heroku-db.png “Screenshot of the Heroku Data dashboard.”))</p>
+
+<picture>
+  <source srcset="/blog/images/django-db/heroku-db.webp" type="image/webp"></source>
+  <img src="/blog/images/django-db/heroku-db.png" alt="Screenshot of the Heroku Data dashboard.">
+</picture>
 
 <p>If a database is already listed for the Django app, then persistent storage should work out of the box for the app once it is deployed.</p>
 
