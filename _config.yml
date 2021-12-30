@@ -91,7 +91,12 @@ default_badges:
 html_escape:
   description: false
 
+# for webp image generation: https://github.com/sverrirs/jekyll-webp
+webp:
+  enabled: true
+
 # Everything below here should be left alone. Modifications may break fastpages
+# I added jekyll-webp to auto-generate webp images: https://github.com/sverrirs/jekyll-webp
 future: true
 theme: minima
 plugins:
@@ -105,6 +110,7 @@ plugins:
   - jekyll-remote-theme
   - jekyll-paginate
   - jekyll-sitemap
+  - jekyll-webp
   - jemoji
 
 # See https://jekyllrb.com/docs/pagination/
