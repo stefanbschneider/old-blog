@@ -94,7 +94,7 @@ html_escape:
 # for webp image generation: https://github.com/sverrirs/jekyll-webp
 webp:
   enabled: true
-  img_dir: ["/images"]
+  img_dir: ["/images/"]
   nested: true
 
 # Everything below here should be left alone. Modifications may break fastpages
