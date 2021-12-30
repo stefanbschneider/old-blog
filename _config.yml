@@ -91,11 +91,6 @@ default_badges:
 html_escape:
   description: false
 
-# for webp image generation: https://github.com/sverrirs/jekyll-webp
-#webp:
-#  enabled: true
-#  img_dir: ["/images/"]
-#  nested: true
 
 # Everything below here should be left alone. Modifications may break fastpages
 future: true
