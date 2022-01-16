@@ -32,7 +32,7 @@ To create a new event for tracking link clicks, go the the [Google Analytics das
 Click the "Create event" button, which shows any previously created custom events. To create a new event, again click "Create". You should now see the form for configuring the new event:
 
 <figure>
-    <img src="{{ site.baseurl }}/images/ga-track-links/ga-config-event.webp" width="1222" height="605" alt="Configuring a new event on Google Analytics." />
+    <img src="{{ site.baseurl }}/images/ga-track-links/ga-config-event.webp" alt="Configuring a new event on Google Analytics." />
 </figure>
 
 First, let's give the new event a name. This should reflect which kind of link clicks the event corresponds to. Also, the name should be in lowercase and without spaces. E.g., for tracking link clicks to https://www.example.com/, you could name the event `click_link_example`.  
