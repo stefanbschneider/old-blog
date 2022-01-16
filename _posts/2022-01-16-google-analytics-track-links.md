@@ -4,7 +4,7 @@ toc: true
 comments: true
 layout: post
 title: Tracking Link Clicks With Google Analytics
-description: Monitor clicks to any link on your website (outgoing, affiliate, etc.) using Google Analytics GA4.
+description: Monitor clicks to specific links on your website (outgoing, affiliate, ads, etc.) using Google Analytics GA4.
 image: images/logos/google-analytics.png
 categories: [google analytics]
 ---
@@ -28,7 +28,7 @@ To create a new event for tracking link clicks, go the the [Google Analytics das
 <figure>
     <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-create-event.webp" type="image/webp">
     <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-create-event.png" type="image/png">
-    <img src="{{ site.baseurl }}/images/ga-track-links/ga-create-event.png" width="948" height="320" alt="Overview of Google Analytics events." />
+    <img src="{{ site.baseurl }}/images/ga-track-links/ga-create-event.webp" width="948" height="320" alt="Overview of Google Analytics events." />
 </figure>
 
 Click the "Create event" button, which shows any previously created custom events. To create a new event, again click "Create". You should now see the form for configuring the new event:
@@ -36,7 +36,7 @@ Click the "Create event" button, which shows any previously created custom event
 <figure>
     <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-config-event.webp" type="image/webp">
     <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-config-event.png" type="image/png">
-    <img src="{{ site.baseurl }}/images/ga-track-links/ga-config-event.png" width="1222" height="605" alt="Configuring a new event on Google Analytics." />
+    <img src="{{ site.baseurl }}/images/ga-track-links/ga-config-event.webp" width="1222" height="605" alt="Configuring a new event on Google Analytics." />
 </figure>
 
 First, let's give the new event a name. This should reflect which kind of link clicks the event corresponds to. Also, the name should be in lowercase and without spaces. E.g., for tracking link clicks to https://www.example.com/, you could name the event `click_link_example`.  
@@ -67,7 +67,7 @@ To track clicks to all affiliate links, simply extend the approach from above:
 <figure>
     <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-config-event-filled.webp" type="image/webp">
     <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-config-event-filled.png" type="image/png">
-    <img src="{{ site.baseurl }}/images/ga-track-links/ga-config-event-filled.png" width="947" height="495" alt="Configuring a new event on Google Analytics; filled form." />
+    <img src="{{ site.baseurl }}/images/ga-track-links/ga-config-event-filled.webp" width="947" height="495" alt="Configuring a new event on Google Analytics; filled form." />
     <figcaption>Configuration of a new Google Analytics event for tracking link clicks to example.com with an example affiliate ID</figcaption>
 </figure>
 
