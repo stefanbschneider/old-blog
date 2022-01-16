@@ -8,6 +8,7 @@
 
 title: Stefan's Blog
 description: Things I learned or want to learn.
+author: Stefan Schneider
 github_username: stefanbschneider
 # you can comment the below line out if your repo name is not different than your baseurl
 github_repo: "blog"
@@ -90,6 +91,10 @@ default_badges:
 # Escape HTML in post descriptions
 html_escape:
   description: false
+
+# for jekyll-seo-tag
+author:
+  twitter: stefan_schn
 
 
 # Everything below here should be left alone. Modifications may break fastpages
