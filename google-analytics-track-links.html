@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Tracking Link Clicks With Google Analytics | Stefan’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Tracking Link Clicks With Google Analytics" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Monitor clicks to any link on your website (outgoing, affiliate, etc.) using Google Analytics GA4." />
+<meta property="og:description" content="Monitor clicks to any link on your website (outgoing, affiliate, etc.) using Google Analytics GA4." />
+<link rel="canonical" href="https://stefanbschneider.github.io/blog/google-analytics-track-links" />
+<meta property="og:url" content="https://stefanbschneider.github.io/blog/google-analytics-track-links" />
+<meta property="og:site_name" content="Stefan’s Blog" />
+<meta property="og:image" content="https://stefanbschneider.github.io/blog/images/logos/google-analytics.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-01-16T00:00:00-06:00" />
+<script type="application/ld+json">
+{"url":"https://stefanbschneider.github.io/blog/google-analytics-track-links","@type":"BlogPosting","headline":"Tracking Link Clicks With Google Analytics","dateModified":"2022-01-16T00:00:00-06:00","datePublished":"2022-01-16T00:00:00-06:00","image":"https://stefanbschneider.github.io/blog/images/logos/google-analytics.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/google-analytics-track-links"},"description":"Monitor clicks to any link on your website (outgoing, affiliate, etc.) using Google Analytics GA4.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://stefanbschneider.github.io/blog/feed.xml" title="Stefan's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RDWKTYTDBL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RDWKTYTDBL');
+</script>
+
+
+
+
+
+<!--for cookie banner (from websitepolicies.com)-->
+<!--<link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/>-->
+<!--<script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>-->
+<!--<script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script>-->
+
+<!--with non-blocking loading: https://web.dev/render-blocking-resources/?utm_source=lighthouse&utm_medium=lr-->
+<link rel="preload" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"></noscript>
+<!--use defer rather than async to keep order of script exec: https://stackoverflow.com/a/39711009/2745116-->
+<script defer src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>
+<script defer>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><!--TODO: load minimized Primer css-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Stefan&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Tracking Link Clicks With Google Analytics</h1><p class="page-description">Monitor clicks to any link on your website (outgoing, affiliate, etc.) using Google Analytics GA4.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-01-16T00:00:00-06:00" itemprop="datePublished">
+        Jan 16, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#google analytics">google analytics</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#creating-an-event-to-track-link-clicks">Creating an Event to Track Link Clicks</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#tracking-a-single-specific-link">Tracking a Single, Specific Link</a></li>
+<li class="toc-entry toc-h2"><a href="#tracking-groups-of-links">Tracking Groups of Links</a></li>
+<li class="toc-entry toc-h2"><a href="#tracking-affiliate-links">Tracking Affiliate Links</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#conversions">Conversions</a></li>
+<li class="toc-entry toc-h1"><a href="#what-next">What Next</a></li>
+</ul><p><a href="https://marketingplatform.google.com/about/analytics/">Google Analytics</a> has been very helpful to monitor and analyze web traffic on my blog. It provides useful insights into how frequently which of my posts and pages are visited, where visitors are from, etc. As such it already keeps track of link clicks to and within pages of my blog.</p>
+
+<p>However, it is often also interesting to track and monitor clicks to outgoing links, i.e., to external websites. This is useful, for example, to keep track of clicks to affiliate links on a website. Such outgoing link clicks are not tracked and shown by default in Google Analytics (the new/current GA4 version) but have to be configured manually.</p>
+
+<p>It took me surprisingly long to figure out how to track clicks to specific (outgoing) links in Google Analytics, even though it is very simple. To spare others some time, here how it works (details and screenshots below):</p>
+
+<ul>
+  <li>Create a new event and define which links you are interested in by using the <code class="language-plaintext highlighter-rouge">link_url</code> parameter</li>
+  <li>Optionally, mark the new event as conversion, e.g., for clicks to affiliate links or ads</li>
+  <li>After a few days, Google Analytics will show the day-by-day clicks (and conversions) to the configured links</li>
+</ul>
+
+<h1 id="creating-an-event-to-track-link-clicks">
+<a class="anchor" href="#creating-an-event-to-track-link-clicks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating an Event to Track Link Clicks</h1>
+
+<p>Google Analytics monitors a variety of different events such as clicks on the website but also how often users scroll down on the website, how often they download files, etc. You can also define your own custom events to track, which allows tracking clicks to specific links.</p>
+
+<p>To create a new event for tracking link clicks, go the the <a href="https://analytics.google.com/analytics/web/">Google Analytics dashboard</a>. On the left side, click “Configure” (left), which shows an overview of the existing events and a button to create a new event:</p>
+
+<figure>
+    <source srcset="/blog/images/ga-track-links/ga-create-event.webp" type="image/webp"></source>
+    <source srcset="/blog/images/ga-track-links/ga-create-event.png" type="image/png"></source>
+    <img src="/blog/images/ga-track-links/ga-create-event.png" width="948" height="320" alt="Overview of Google Analytics events.">
+</figure>
+
+<p>Click the “Create event” button, which shows any previously created custom events. To create a new event, again click “Create”. You should now see the form for configuring the new event:</p>
+
+<figure>
+    <source srcset="/blog/images/ga-track-links/ga-config-event.webp" type="image/webp"></source>
+    <source srcset="/blog/images/ga-track-links/ga-config-event.png" type="image/png"></source>
+    <img src="/blog/images/ga-track-links/ga-config-event.png" width="1222" height="605" alt="Configuring a new event on Google Analytics.">
+</figure>
+
+<p>First, let’s give the new event a name. This should reflect which kind of link clicks the event corresponds to. Also, the name should be in lowercase and without spaces. E.g., for tracking link clicks to https://www.example.com/, you could name the event <code class="language-plaintext highlighter-rouge">click_link_example</code>.</p>
+
+<p>Now, the most important part is to define the matching conditions for the new event. For tracking link clicks, use the <code class="language-plaintext highlighter-rouge">link_url</code> parameter. You can use the event with this parameter to track clicks to a single, specific link or to groups of links.</p>
+
+<h2 id="tracking-a-single-specific-link">
+<a class="anchor" href="#tracking-a-single-specific-link" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tracking a Single, Specific Link</h2>
+
+<p>If you want to track a single, specific link, e.g., https://www.example.com/abc, set a single matching condition with parameter <code class="language-plaintext highlighter-rouge">link_url</code> and operator “equals (ignore case)”.  Then set the value to the specific URL of the link, e.g., <code class="language-plaintext highlighter-rouge">https://www.example.com/abc</code>.</p>
+
+<h2 id="tracking-groups-of-links">
+<a class="anchor" href="#tracking-groups-of-links" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tracking Groups of Links</h2>
+
+<p>If you are interested in clicks to all links going to a certain website, but you do not want to distinguish clicks to different pages on that website, you can create and track a single event for all these link clicks. For example, you want to track clicks to https://www.example.com/, https://www.example.com/abc, https://www.example.com/def, etc. all together in a single event.</p>
+
+<p>For that, you also just need a single matching condition, again using the <code class="language-plaintext highlighter-rouge">link_url</code> parameter. Here, simply use the operator “contains (ignore case)” instead of “equals (ignore case)” and use as value the domain name (e.g., <code class="language-plaintext highlighter-rouge">example.com</code>), not the full URL (e.g., <code class="language-plaintext highlighter-rouge">https://www.example.com/abc</code>).</p>
+
+<p>I use this approach, creating one event per external page that I am interested in, grouping all links to that page in a single event.</p>
+
+<h2 id="tracking-affiliate-links">
+<a class="anchor" href="#tracking-affiliate-links" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tracking Affiliate Links</h2>
+
+<p>It is also simple to add additional matching conditions for more fine-grained control. For example, this allows tracking clicks to affiliate links, which typically refer to one or multiple pages on a partner website and always contain a certain suffix holding the affiliate ID, e.g., <code class="language-plaintext highlighter-rouge">?in=569</code>. Of course, this affiliate ID is specific to you and the website.</p>
+
+<p>To track clicks to all affiliate links, simply extend the approach from above:</p>
+
+<ul>
+  <li>Use one matching rule to capture all link clicks to pages of a certain domain with parameter <code class="language-plaintext highlighter-rouge">link_url</code>, operator “contains (ignore case)”, and value corresponding to the target domain (e.g., <code class="language-plaintext highlighter-rouge">example.com</code>).</li>
+  <li>Add a second matching rule (click “Add condition”) that filters out only affiliate links to the above domain. For that, use the parameter <code class="language-plaintext highlighter-rouge">link_url</code>, operator “contains (ignore)”, and use your affiliate ID as value (e.g., <code class="language-plaintext highlighter-rouge">?in=569</code>).</li>
+</ul>
+
+<figure>
+    <source srcset="/blog/images/ga-track-links/ga-config-event-filled.webp" type="image/webp"></source>
+    <source srcset="/blog/images/ga-track-links/ga-config-event-filled.png" type="image/png"></source>
+    <img src="/blog/images/ga-track-links/ga-config-event-filled.png" width="947" height="495" alt="Configuring a new event on Google Analytics; filled form.">
+    <figcaption>Configuration of a new Google Analytics event for tracking link clicks to example.com with an example affiliate ID</figcaption>
+</figure>
+
+<p>Finally, click “Create” to save the newly create event - whether it is for tracking a single link, multiple links, or affiliate links. Note that the new event is often not directly included in the list of events. For me, it took several days until Google Analytics showed the new event - both in the reports and in the list of events under “Configure”.</p>
+
+<h1 id="conversions">
+<a class="anchor" href="#conversions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Conversions</h1>
+
+<p>Conversions are events when visitors turn to paying customers. In Google Analytics, you can define yourself which link clicks (or other events) you count as conversions, e.g., affiliate link clicks. Google Analytics then provides extra reports on these conversion events.</p>
+
+<p>To mark a new event as conversion, simply go to “Configure” in the Google Analytics dashboard, and select “Mark as conversion” in the right column for the specific event. Note, that newly created events are not yet listed there and it takes some days until they are listed.</p>
+
+<p>If you do not want to wait, you can also directly mark your new event as conversion, even before it is included in the list of events. For that, click “Configure”, then “Conversions”, then the button “New conversion event”. Now, copy and paste the exact name of the new event into the field.</p>
+
+<p>Google Analytics will start tracking your newly created events and monitor clicks to the defined links. After a few days, your Google Analytics dashboard should show the link clicks under “Reports &gt; Engagement &gt; Events”. If you defined conversion events, these should be visible under “Reports &gt; Engagement &gt; Conversions”.</p>
+
+<p>I hope this was helpful. Let me know in the comments if anything remains unclear.</p>
+
+<h1 id="what-next">
+<a class="anchor" href="#what-next" aria-hidden="true"><span class="octicon octicon-link"></span></a>What Next</h1>
+
+<ul>
+  <li><a href="https://stefanbschneider.github.io/blog/django-google-analytics">Adding Google Analytics to a Django App</a></li>
+  <li><a href="https://stefanbschneider.github.io/blog/categories/#google%20analytics">All blog posts on Google Analytics</a></li>
+</ul>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="stefanbschneider/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/google-analytics-track-links" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Things I learned or want to learn.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/stefanbschneider" target="_blank" title="stefanbschneider"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/stefan_schn" target="_blank" title="stefan_schn"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
