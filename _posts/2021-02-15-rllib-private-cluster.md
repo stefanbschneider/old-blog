@@ -13,7 +13,7 @@ categories: [python, ray, rllib, machine learning, reinforcement learning, clust
 Thanks already to the Ray team (particularly Alex) for [their great support](https://discuss.ray.io/t/getting-started-with-rllib-on-a-private-cluster/683)." %}
 
 In this blog post, I use reinforcement learning (RL) to solve a custom optimization task (here, related to coordination in mobile networks).
-To this end, I use the scalable RL framework [RLlib](https://docs.ray.io/en/master/rllib.html), 
+To this end, I use the scalable RL framework [RLlib](https://docs.ray.io/en/latest/rllib/index.html), 
 which is part of [Ray](https://github.com/ray-project/ray), 
 and a [custom environment](https://github.com/CN-UPB/DeepCoMP), which implements the [OpenAI Gym](https://gym.openai.com/) interface.
 As RL algorithm, I use [proximal policy optimization (PPO)](https://openai.com/blog/openai-baselines-ppo/), which is implemented in RLlib and configured in my environment.
