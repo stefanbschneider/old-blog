@@ -26,16 +26,12 @@ Google Analytics monitors a variety of different events such as clicks on the we
 To create a new event for tracking link clicks, go the the [Google Analytics dashboard](https://analytics.google.com/analytics/web/). On the left side, click "Configure" (left), which shows an overview of the existing events and a button to create a new event:
 
 <figure>
-    <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-create-event.webp" type="image/webp">
-    <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-create-event.png" type="image/png">
     <img src="{{ site.baseurl }}/images/ga-track-links/ga-create-event.webp" width="948" height="320" alt="Overview of Google Analytics events." />
 </figure>
 
 Click the "Create event" button, which shows any previously created custom events. To create a new event, again click "Create". You should now see the form for configuring the new event:
 
 <figure>
-    <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-config-event.webp" type="image/webp">
-    <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-config-event.png" type="image/png">
     <img src="{{ site.baseurl }}/images/ga-track-links/ga-config-event.webp" width="1222" height="605" alt="Configuring a new event on Google Analytics." />
 </figure>
 
@@ -65,8 +61,6 @@ To track clicks to all affiliate links, simply extend the approach from above:
 * Add a second matching rule (click "Add condition") that filters out only affiliate links to the above domain. For that, use the parameter `link_url`, operator "contains (ignore)", and use your affiliate ID as value (e.g., `?in=569`).
 
 <figure>
-    <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-config-event-filled.webp" type="image/webp">
-    <source srcset="{{ site.baseurl }}/images/ga-track-links/ga-config-event-filled.png" type="image/png">
     <img src="{{ site.baseurl }}/images/ga-track-links/ga-config-event-filled.webp" width="947" height="495" alt="Configuring a new event on Google Analytics; filled form." />
     <figcaption>Configuration of a new Google Analytics event for tracking link clicks to example.com with an example affiliate ID</figcaption>
 </figure>
