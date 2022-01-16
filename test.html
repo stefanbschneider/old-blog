@@ -49,7 +49,9 @@
 <!--use defer rather than async to keep order of script exec: https://stackoverflow.com/a/39711009/2745116-->
 <script defer src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>
 <script defer>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><!--TODO: load minimized Primer css-->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+https://cdnjs.cloudflare.com/ajax/libs/Primer/19.2.0/primer.min.css
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/19.2.0/primer.min.css" integrity="sha512-NxIsgwmdJxP5uAFJLhuh3SnROpI62Wp7WKWOTGet+6SkZRPDlp9YcuApg8kWdxy76SOktUY38aFh2Qlnbo3KMQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" /> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
 
 <script>
@@ -896,15 +898,7 @@ window.onload = wrap_img;
 <a class="anchor" href="#Remote-Images" aria-hidden="true"><span class="octicon octicon-link"></span></a>Remote Images<a class="anchor-link" href="#Remote-Images"> </a>
 </h3>
 <p>Remote images can be included with the following markdown syntax:</p>
-<p><code>![](https://image.flaticon.com/icons/svg/36/36686.svg)</code></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="https://image.flaticon.com/icons/svg/36/36686.svg" alt=""></p>
+<p><code>![](https://image.flaticon.com/icons/svg/36/36686.svg)</code> (just and example; link broken)</p>
 
 </div>
 </div>
@@ -1054,12 +1048,12 @@ window.onload = wrap_img;
 <pre><code>For example, here is a footnote {% fn 1 %}.
 And another {% fn 2 %}
 {{ 'This is the footnote.' | fndetail: 1 }}
-{{ 'This is the other footnote. You can even have a [link](www.github.com)!' | fndetail: 2 }}</code></pre>
+{{ 'This is the other footnote. You can even have a [link](https://stefanbschneider.github.io/)!' | fndetail: 2 }}</code></pre>
 <p>For example, here is a footnote <sup id="fnref-1" class="footnote-ref"><a href="#fn-1">1</a></sup>.</p>
 <p>And another <sup id="fnref-2" class="footnote-ref"><a href="#fn-2">2</a></sup></p>
 <p></p>
 <div class="footnotes"><p id="fn-1">1. This is the footnote.<a href="#fnref-1" class="footnote footnotes">↩</a></p></div>
-<div class="footnotes"><p id="fn-2">2. This is the other footnote. You can even have a <a href="www.github.com">link</a>!<a href="#fnref-2" class="footnote footnotes">↩</a></p></div>
+<div class="footnotes"><p id="fn-2">2. This is the other footnote. You can even have a <a href="https://stefanbschneider.github.io/">link</a>!<a href="#fnref-2" class="footnote footnotes">↩</a></p></div>
 
 </div>
 </div>
