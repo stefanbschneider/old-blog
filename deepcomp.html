@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Cell Selection with Deep Reinforcement Learning | Stefan’s Blog</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Cell Selection with Deep Reinforcement Learning" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Self-adaptive and self-learning multi-cell selection for 5G and beyond with deep reinforcement learning." />
+<meta property="og:description" content="Self-adaptive and self-learning multi-cell selection for 5G and beyond with deep reinforcement learning." />
+<link rel="canonical" href="https://stefanbschneider.github.io/blog/deepcomp" />
+<meta property="og:url" content="https://stefanbschneider.github.io/blog/deepcomp" />
+<meta property="og:site_name" content="Stefan’s Blog" />
+<meta property="og:image" content="https://stefanbschneider.github.io/blog/images/deepcomp/5g-tower.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-05-02T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://stefanbschneider.github.io/blog/deepcomp","@type":"BlogPosting","headline":"Cell Selection with Deep Reinforcement Learning","dateModified":"2021-05-02T00:00:00-05:00","datePublished":"2021-05-02T00:00:00-05:00","image":"https://stefanbschneider.github.io/blog/images/deepcomp/5g-tower.jpg","mainEntityOfPage":{"@type":"WebPage","@id":"https://stefanbschneider.github.io/blog/deepcomp"},"description":"Self-adaptive and self-learning multi-cell selection for 5G and beyond with deep reinforcement learning.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://stefanbschneider.github.io/blog/feed.xml" title="Stefan's Blog" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RDWKTYTDBL"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RDWKTYTDBL');
+</script>
+
+
+
+
+
+<!--for cookie banner (from websitepolicies.com)-->
+<!--<link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"/>-->
+<!--<script src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>-->
+<!--<script>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script>-->
+
+<!--with non-blocking loading: https://web.dev/render-blocking-resources/?utm_source=lighthouse&utm_medium=lr-->
+<link rel="preload" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" type="text/css" href="//wpcc.io/lib/1.0.2/cookieconsent.min.css"></noscript>
+<!--use defer rather than async to keep order of script exec: https://stackoverflow.com/a/39711009/2745116-->
+<script defer src="//wpcc.io/lib/1.0.2/cookieconsent.min.js"></script>
+<script defer>window.addEventListener("load", function(){window.wpcc.init({"border":"thin","corners":"small","colors":{"popup":{"background":"#f6f6f6","text":"#000000","border":"#555555"},"button":{"background":"#555555","text":"#ffffff"}},"position":"bottom","content":{"href":"https://www.websitepolicies.com/policies/view/2QHCZBWr","message":"This website uses cookies to ensure you get the best experience on my website."}})});</script><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><!--TODO: load minimized Primer css-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.min.css" integrity="sha512-0Ew7bir56AmxlMs//WNzdHQT0cEJHv7xmI2SQXavnLoEcTfV/p0JOWRln3MrW9TDBVfEQoxurR0i38m9zPDS6g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" /> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Stefan&#39;s Blog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Cell Selection with Deep Reinforcement Learning</h1><p class="page-description">Self-adaptive and self-learning multi-cell selection for 5G and beyond with deep reinforcement learning.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-05-02T00:00:00-05:00" itemprop="datePublished">
+        May 2, 2021
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      6 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#research">research</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#5g">5g</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#wireless">wireless</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#mobility">mobility</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#optimization">optimization</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#reinforcement learning">reinforcement learning</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#marl">marl</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#ray">ray</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#rllib">rllib</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#python">python</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#tensorflow">tensorflow</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h1"><a href="#what-is-multi-cell-selection-and-why-is-it-important">What is (multi-)cell selection and why is it important?</a></li>
+<li class="toc-entry toc-h1"><a href="#what-is-the-challenge">What is the challenge?</a></li>
+<li class="toc-entry toc-h1"><a href="#how-to-solve-it">How to solve it?</a>
+<ul>
+<li class="toc-entry toc-h2"><a href="#centralized-cell-selection-with-deepcomp">Centralized cell selection with DeepCoMP</a></li>
+<li class="toc-entry toc-h2"><a href="#distributed-cell-selection-with-dd-comp-and-d3-comp">Distributed cell selection with DD-CoMP and D3-CoMP</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h1"><a href="#outcome">Outcome</a></li>
+<li class="toc-entry toc-h1"><a href="#what-next">What next?</a></li>
+</ul><p><img src="/blog/images/deepcomp/5g-tower.jpg" alt="" title="5G tower image by Christoph Scholz under CC BY-SA 2.0 license."></p>
+
+<p>In the last year, I have worked a lot on mobility management and cell selection in mobile networks, 
+which is very relevant for upcoming 5G networks and beyond.
+In this blog post, I try to give a brief, high-level overview of my research, describing what cell selection is,
+why it is important, yet challenging. 
+I also outline how I solved the cell selection problem with modern self-learning techniques and visualize the outcomes.</p>
+
+<p>The whole blog post is meant for people who are interested but do not have a scientific background or 
+extensive knowledge in the area.
+The corresponding research paper is still work in progress. 
+I will post a preprint later, which contains a lot more details than this blog post.</p>
+
+<p>Either way, if something is unclear, or you have open questions, feel free to ask them in the comment section below.
+For that, you need a (free) GitHub account. Alternatively, you can also contact me directly via Twitter or email.</p>
+
+<h1 id="what-is-multi-cell-selection-and-why-is-it-important">
+<a class="anchor" href="#what-is-multi-cell-selection-and-why-is-it-important" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is (multi-)cell selection and why is it important?</h1>
+
+<p>We use mobile networks every day, where our phones connect to cell towers nearby to send and receive data.
+While there are many influencing factors, we generally have a better signal and higher data rates when we are closer 
+to the connected cell tower.
+The farther we are away, the worse the signal gets. 
+When we are far away from the connected cell tower and in between multiple cells (called “cell edge”), 
+the received signal is typically rather bad, which results in low and unreliable data rates.
+However, high and reliable data rates are crucial for current and upcoming services like video streaming,
+augmented or virtual reality, and cloud gaming.</p>
+
+<p><img src="/blog/images/deepcomp/system.png" alt="" title="Three cells with five users. User 5 is connected to multiple cells simultaneously using CoMP."></p>
+
+<p>One option to increase the received data rate, particularly at the cell edge, was introduced in 4G/LTE and is called coordinated multipoint (CoMP).
+Among other features, CoMP allows users to connect to and receive data from multiple cells simultaneously.
+Compared to previous mobile networks (1G, 2G, and 3G), which only allowed connecting to a single cell, joint transmission from
+multiple cells with CoMP leads to significantly higher data rates.
+This is illustrated in the figure above for user 5.</p>
+
+<p>In 5G and beyond, joint transmission from multiple cells with CoMP will become increasingly important as users want
+higher and higher data rates, and the trend is towards many, small and partially overlapping cells.
+Since users move around these cells and cell sizes might be quite small, we need to frequently adjust which users are
+connected to which cells, which is called “cell selection”.
+In CoMP with joint transmissions, users can connect to and receive data from multiple cells, thus I refer to it as 
+“multi-cell selection”.</p>
+
+<h1 id="what-is-the-challenge">
+<a class="anchor" href="#what-is-the-challenge" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is the challenge?</h1>
+
+<p>Ok, so users need to connect to cells and, with CoMP, they may connect to multiple cells. What’s the problem?
+Why not just connect each user to the closest cell? 
+Indeed, hat is a common approach for single-cell selection, but it does not leverage the idea of multiple connections with CoMP.
+For CoMP, why not simply connect each user to all cells in range or to a specific number of cells?
+Again, that is a fair idea, but it may lead to strong competition between users.
+Each user connected to a cell requires some resources, e.g., in terms of time and frequency, often called “resource blocks”.
+Since each cell has a limited amount of these resource blocks, connecting more users to a cell means that fewer resource blocks
+are available per user, i.e., these users compete for resources.
+In the figure above, users 1-4 are all connected to cell A and compete for resources.
+How each cell allocates resources to connected users (and how much) is typically unknown and may be defined in a vendor-specific,
+proprietary allocation scheme.</p>
+
+<p>Hence, the challenge of multi-cell selection is to dynamically select a set of cells that each user should be connected to.
+This by connecting to these cells, the user should receive data at a sufficient rate but avoid unnecessary competition
+with other users.
+As users move around, the selected set of connected cells should be adjusted dynamically.
+The goal of dynamic multi-cell selection is to ensure good service quality for all users.</p>
+
+<h1 id="how-to-solve-it">
+<a class="anchor" href="#how-to-solve-it" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to solve it?</h1>
+
+<p>As discussed above, simple rules, e.g., for connecting to the closest cell or to all cells in range,
+often do not work very well or just in some scenarios.
+Instead, I propose three more flexible and powerful approach for multi-cell selection using deep reinforcement learning.
+The main idea is that these approaches do not follow a hand-written algorithm or fixed rules
+but learn themselves how to optimize service quality by testing different actions and receiving rewards for good service quality.
+In doing so, these approaches learn themselves how to optimize multi-cell selection and adapt to any given scenario.
+I propose three approaches: A centralized approach, called DeepCoMP and two distributed approaches, called DD-CoMP and D3-CoMP.
+The implemented prototypes (in Python) are publicly available on <a href="https://github.com/CN-UPB/DeepCoMP">GitHub</a>.</p>
+
+<h2 id="centralized-cell-selection-with-deepcomp">
+<a class="anchor" href="#centralized-cell-selection-with-deepcomp" aria-hidden="true"><span class="octicon octicon-link"></span></a>Centralized cell selection with DeepCoMP</h2>
+
+<p>As a centralized approach, DeepCoMP assumes global knowledge and control of all users.
+This means, DeepCoMP needs to collect information from all users in a central location, e.g., about users’ current
+connections, signal strength, etc.
+Similarly, DeepCoMP represents a single, centralized entity that selects cells for all users simultaneously.
+This is illustrated in the figure below.</p>
+
+<p><img src="/blog/images/deepcomp/mdp-deepcomp-simple.png" alt="" title="Centralized approach: DeepCoMP"></p>
+
+<h2 id="distributed-cell-selection-with-dd-comp-and-d3-comp">
+<a class="anchor" href="#distributed-cell-selection-with-dd-comp-and-d3-comp" aria-hidden="true"><span class="octicon octicon-link"></span></a>Distributed cell selection with DD-CoMP and D3-CoMP</h2>
+
+<p>In addition to the centralized DeepCoMP approach, I also propose two distributed approaches, called DD-CoMP and D3-CoMP.
+These approaches use multi-agent reinforcement learning, where multiple “agents” select cells independently in parallel.
+Particularly, I assume one agent per user, which observes the users current connections, signal strength, etc. and selects
+suitable cells.
+Because each agent only cares about its own user, it is much simpler to implement and use than the centralized DeepCoMP approach.
+This is visualized in the figure below.</p>
+
+<p><img src="/blog/images/deepcomp/mdp-ddcomp-simple.png" alt="" title="Distributed approaches: DD-CoMP and D3-CoMP"></p>
+
+<p>In reinforcement learning, such agents are initially trained, where they test and learn from many different actions,
+and then apply their learned policy (in the “inference” phase).
+In DD-CoMP training experience from all users is combined to learn cell selection more efficiently.
+In D3-CoMP each agent trains independently from all other agents and only uses experience from its own user.
+This allows to reduce communication between agents.</p>
+
+<h1 id="outcome">
+<a class="anchor" href="#outcome" aria-hidden="true"><span class="octicon octicon-link"></span></a>Outcome</h1>
+
+<p>I implemented prototypes of DeepCoMP, DD-CoMP, and D3-CoMP, which are available on <a href="https://github.com/CN-UPB/DeepCoMP">GitHub</a>.
+When evaluating these approaches, I found that they indeed learn multi-cell selection well after some training.
+To illustrate, DeepCoMP without any training only makes random actions, which are not useful and lead to many
+disconnected users (shown as circles; red means bad quality):</p>
+
+<p><img src="/blog/images/deepcomp/central-untrained.gif" alt="" title="Without training, the DeepCoMP approach only selects cells randomly."></p>
+
+<p>After some training (here: 2 million train steps), it learns to select cells in a highly optimized fashion,
+ensuring that all users are connected and have much better quality.
+It connects users to multiple cells with CoMP where it is useful but not overly aggressive to avoid unnecessary competition:</p>
+
+<p><img src="/blog/images/deepcomp/central-trained.gif" alt="" title="With training, DeepCoMP learns to select suitable cells for all users."></p>
+
+<p>Further details and systematic evaluation results are in the paper: <a href="https://ris.uni-paderborn.de/download/33854/33855/preprint.pdf">Preprint</a>.</p>
+
+<h1 id="what-next">
+<a class="anchor" href="#what-next" aria-hidden="true"><span class="octicon octicon-link"></span></a>What next?</h1>
+
+<p>In future work, my proposed approaches could be further improved to learn more efficiently.
+I could also extend the problem to not only dynamically select cells for each user but also control
+things like sending power.</p>
+
+<p>If you are interested, you can find more information here:</p>
+
+<ul>
+  <li><a href="https://ris.uni-paderborn.de/download/33854/33855/preprint.pdf">Paper Preprint</a></li>
+  <li><a href="https://github.com/CN-UPB/DeepCoMP">Code on GitHub</a></li>
+  <li><a href="https://www.anyscale.com/ray-summit-2021?agenda=deepcomp-multi-agent-reinforcement-learning-for-multi-cell-selection-in-5g">My talk at Ray Summit 2021</a></li>
+</ul>
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="stefanbschneider/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/deepcomp" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+        <ul class="contact-list">
+          
+        </ul>
+      </div>
+      <div class="footer-col">
+        <p>Things I learned or want to learn.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/stefanbschneider" target="_blank" title="stefanbschneider"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://twitter.com/stefan_schn" target="_blank" title="stefan_schn"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
