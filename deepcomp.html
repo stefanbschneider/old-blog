@@ -170,16 +170,15 @@ window.onload = wrap_img;
 <p>In the last year, I have worked a lot on mobility management and cell selection in mobile networks, 
 which is very relevant for upcoming 5G networks and beyond.
 In this blog post, I try to give a brief, high-level overview of my research, describing what cell selection is,
-why it is important, yet challenging. 
+why it is important yet challenging. 
 I also outline how I solved the cell selection problem with modern self-learning techniques and visualize the outcomes.</p>
 
 <p>The whole blog post is meant for people who are interested but do not have a scientific background or 
 extensive knowledge in the area.
-The corresponding research paper is still work in progress. 
-I will post a preprint later, which contains a lot more details than this blog post.</p>
+The corresponding research paper is still under review; a preprint is available <a href="https://ris.uni-paderborn.de/download/33854/33855/preprint.pdf">here</a>.</p>
 
 <p>Either way, if something is unclear, or you have open questions, feel free to ask them in the comment section below.
-For that, you need a (free) GitHub account. Alternatively, you can also contact me directly via Twitter or email.</p>
+For that, you need a (free) GitHub account. Alternatively, you can also contact me directly via <a href="https://twitter.com/stefan_schn">Twitter</a>.</p>
 
 <h1 id="what-is-multi-cell-selection-and-why-is-it-important">
 <a class="anchor" href="#what-is-multi-cell-selection-and-why-is-it-important" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is (multi-)cell selection and why is it important?</h1>
@@ -224,7 +223,7 @@ How each cell allocates resources to connected users (and how much) is typically
 proprietary allocation scheme.</p>
 
 <p>Hence, the challenge of multi-cell selection is to dynamically select a set of cells that each user should be connected to.
-This by connecting to these cells, the user should receive data at a sufficient rate but avoid unnecessary competition
+By connecting to these cells, the user should receive data at a sufficient rate but avoid unnecessary competition
 with other users.
 As users move around, the selected set of connected cells should be adjusted dynamically.
 The goal of dynamic multi-cell selection is to ensure good service quality for all users.</p>
@@ -234,12 +233,14 @@ The goal of dynamic multi-cell selection is to ensure good service quality for a
 
 <p>As discussed above, simple rules, e.g., for connecting to the closest cell or to all cells in range,
 often do not work very well or just in some scenarios.
-Instead, I propose three more flexible and powerful approach for multi-cell selection using deep reinforcement learning.
-The main idea is that these approaches do not follow a hand-written algorithm or fixed rules
+Instead, I propose three more flexible and powerful approaches for multi-cell selection using deep reinforcement learning.
+The main idea is that these approaches do not follow any hand-written algorithm or fixed rules
 but learn themselves how to optimize service quality by testing different actions and receiving rewards for good service quality.
-In doing so, these approaches learn themselves how to optimize multi-cell selection and adapt to any given scenario.
-I propose three approaches: A centralized approach, called DeepCoMP and two distributed approaches, called DD-CoMP and D3-CoMP.
-The implemented prototypes (in Python) are publicly available on <a href="https://github.com/CN-UPB/DeepCoMP">GitHub</a>.</p>
+In doing so, these approaches learn themselves how to optimize multi-cell selection and adapt to any given scenario.</p>
+
+<p>I propose three approaches: A centralized approach, called DeepCoMP and two distributed approaches, called DD-CoMP and D3-CoMP.
+The implemented prototypes (in Python) are publicly available on <a href="https://github.com/CN-UPB/DeepCoMP">GitHub</a>.
+The environment used for training and evaluation is published separately as open source: <a href="https://github.com/stefanbschneider/mobile-env">mobile-env</a> (<a href="https://ris.uni-paderborn.de/download/30236/30237/author_version.pdf">paper</a>).</p>
 
 <h2 id="centralized-cell-selection-with-deepcomp">
 <a class="anchor" href="#centralized-cell-selection-with-deepcomp" aria-hidden="true"><span class="octicon octicon-link"></span></a>Centralized cell selection with DeepCoMP</h2>
@@ -275,7 +276,7 @@ This allows to reduce communication between agents.</p>
 
 <p>I implemented prototypes of DeepCoMP, DD-CoMP, and D3-CoMP, which are available on <a href="https://github.com/CN-UPB/DeepCoMP">GitHub</a>.
 When evaluating these approaches, I found that they indeed learn multi-cell selection well after some training.
-To illustrate, DeepCoMP without any training only makes random actions, which are not useful and lead to many
+To illustrate, DeepCoMP without any training only takes random connect/disconnect actions, which are not useful and lead to many
 disconnected users (shown as circles; red means bad quality):</p>
 
 <p><img src="/blog/images/deepcomp/central-untrained.gif" alt="" title="Without training, the DeepCoMP approach only selects cells randomly."></p>
@@ -286,14 +287,14 @@ It connects users to multiple cells with CoMP where it is useful but not overly 
 
 <p><img src="/blog/images/deepcomp/central-trained.gif" alt="" title="With training, DeepCoMP learns to select suitable cells for all users."></p>
 
-<p>Further details and systematic evaluation results are in the paper: <a href="https://ris.uni-paderborn.de/download/33854/33855/preprint.pdf">Preprint</a>.</p>
+<p>Overall, DeepCoMP is able to learn non-trivial cell selection schemes that lead to good service quality for all users!
+Further details and systematic evaluation results are in the <a href="https://ris.uni-paderborn.de/download/33854/33855/preprint.pdf">paper</a>.</p>
 
 <h1 id="what-next">
 <a class="anchor" href="#what-next" aria-hidden="true"><span class="octicon octicon-link"></span></a>What next?</h1>
 
-<p>In future work, my proposed approaches could be further improved to learn more efficiently.
-I could also extend the problem to not only dynamically select cells for each user but also control
-things like sending power.</p>
+<p>In future work, my proposed approaches could be further improved to learn more efficiently (e.g., with curriculum learning).
+They could also be extended to not only dynamically select cells for each user but to also control other parameters such as transmission power.</p>
 
 <p>If you are interested, you can find more information here:</p>
 
