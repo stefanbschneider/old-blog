@@ -45,8 +45,7 @@ permalink: /:title
 # Github and twitter are optional:
 minima:
   social_links:
-    twitter: stefan_schn
-    github: stefanbschneider
+    - { platform: github,  user_url: "https://github.com/stefanbschneider/" }
 
 # Set this to true to get LaTeX math equation support
 # custom: or just set use_math: true in the front matter of specific posts
@@ -118,7 +117,7 @@ plugins:
 paginate: 15
 paginate_path: /page:num/
 
-remote_theme: jekyll/minima
+remote_theme: jekyll/minima@v2.5.1
 
 titles_from_headings:
   enabled:     true
